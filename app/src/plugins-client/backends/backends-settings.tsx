@@ -470,6 +470,9 @@ export function BackendsSettings(): ReactElement {
               onChange={(e) => patch({ baseUrl: e.target.value })}
             />
             {host ? <p className={HINT}>{t('backendsSettings.destinationNotice', { host })}</p> : null}
+            {form.protocol === 'openai-responses' && /\/anthropic\/?$/i.test(form.baseUrl.trim()) ? (
+              <p className="text-[12px] text-amber-600 dark:text-amber-400">{t('backendsSettings.protocolMismatch')}</p>
+            ) : null}
           </div>
           <div className="space-y-1.5">
             <Label className={LABEL} htmlFor="backend-key">{t('backendsSettings.fields.key')}</Label>

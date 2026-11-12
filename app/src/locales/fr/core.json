@@ -3694,7 +3694,8 @@
     "presets": {
       "omlx": "oMLX (local)",
       "deepseek": "DeepSeek API (web)"
-    }
+    },
+    "protocolMismatch": "This is an Anthropic-compatible URL: choose the Anthropic protocol above, or the request will 404."
   },
   "gptLiveSettings": {
     "title": "Conversation GPT-Live",
