@@ -55,6 +55,9 @@ export function AccountStep(): ReactElement {
   const [draft, setDraft] = useState<AccountDraft>(EMPTY);
   const [shown, setShown] = useState(false);
   const [needsToken, setNeedsToken] = useState(false);
+  // A local install can create the first account without the mailed code
+  // (`TIMON_SETUP_EMAIL_CODE=0`): the daemon says so on `/api/auth/me`.
+  const [offlineSetup, setOfflineSetup] = useState(false);
   const [challenge, setChallenge] = useState<CodeChallenge | null>(null);
   const [view, setView] = useState<'form' | 'code'>('form');
   const [sending, setSending] = useState(false);
@@ -68,7 +71,10 @@ export function AccountStep(): ReactElement {
       if (!alive) return;
       if (me.user) next();
       else if (!me.needsSetup) goTo('signin');
-      else setNeedsToken(me.setupRequiresToken === true);
+      else {
+        setNeedsToken(me.setupRequiresToken === true);
+        setOfflineSetup(me.setupRequiresEmailCode === false);
+      }
     });
     return () => { alive = false; };
   }, [next, goTo]);
@@ -101,6 +107,23 @@ export function AccountStep(): ReactElement {
     if (!ready || sending || blocked) return;
     setSending(true);
     setFailure(null);
+    // Offline/local install: the account is created directly, with no mailed code.
+    if (offlineSetup) {
+      const scheme = firstRunScheme();
+      const answer = await createAccount({
+        email,
+        name: accountName(draft.name, email),
+        password: draft.password,
+        ...(scheme ? { scheme } : {}),
+        ...(needsToken ? { setupToken: draft.setupToken.trim() } : {}),
+        challengeId: '',
+        code: '',
+      });
+      setSending(false);
+      if (answer.ok) next();
+      else setFailure(answer.failure);
+      return;
+    }
     const answer = await ask();
     setSending(false);
     if ('challengeId' in answer) {

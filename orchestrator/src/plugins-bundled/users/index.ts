@@ -26,7 +26,12 @@ export const name = manifest.name;
 export const inject = manifest.inject;
 
 export function apply(ctx: Context): void {
-  registerRoutes(ctx.http.router(), BUNDLED_USER_ROUTES);
+  // A local install can opt out of the first account's emailed confirmation code
+  // (`TIMON_SETUP_EMAIL_CODE=0`): no mail relay is reachable offline. The
+  // daemon-token operator path already skips it; this lets the web onboarding
+  // create the account too.
+  const emailVerification = process.env.TIMON_SETUP_EMAIL_CODE !== '0';
+  registerRoutes(ctx.http.router(), { ...BUNDLED_USER_ROUTES, emailVerification });
   registerDeviceRoutes(ctx.http.router());
   // A device that expires or loses its owner while a terminal or an event
   // stream is open loses it too (revocation closes them at once).

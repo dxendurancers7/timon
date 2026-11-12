@@ -44,6 +44,9 @@ export type AuthMe = {
   setupRequiresLicense?: boolean;
   /** An exposed install asks for the one-time token `timon setup-token` prints. */
   setupRequiresToken?: boolean;
+  /** The first account confirms its email with a mailed code. `false` when the
+   *  operator turned that off for a local install (`TIMON_SETUP_EMAIL_CODE=0`). */
+  setupRequiresEmailCode?: boolean;
   prefs: UserPrefs;
   /** `null`: a daemon older than the field, which did not say (TODO #560).
    *  The ACTIVE machine's: on a remote one, the acting account's. */
@@ -101,20 +104,21 @@ export function meCan(me: AuthMe | null, permission: MePermission): boolean | nu
 export async function fetchMe(): Promise<AuthMe> {
   const response = await sharedGet('/api/ui/auth/me');
   if (!response.ok) return { user: null, needsSetup: false, prefs: { ...DEFAULT_USER_PREFS }, can: {}, acting: null };
-  const body = await readJsonObject(response, '/api/ui/auth/me') as { user?: PublicUser | null; needsSetup?: boolean; setupRequiresLicense?: boolean; setupRequiresToken?: boolean; prefs?: unknown; can?: unknown; acting?: unknown; welcome?: unknown };
+  const body = await readJsonObject(response, '/api/ui/auth/me') as { user?: PublicUser | null; needsSetup?: boolean; setupRequiresLicense?: boolean; setupRequiresToken?: boolean; setupRequiresEmailCode?: boolean; prefs?: unknown; can?: unknown; acting?: unknown; welcome?: unknown };
   return readAuthMe(body);
 }
 
 /** A `/api/ui/auth/me` body, typed. On a remote machine the permissions are
  *  the acting account's — the routes they grey are relayed there — and none
  *  while that machine has not said who the device is. */
-export function readAuthMe(body: { user?: PublicUser | null; needsSetup?: boolean; setupRequiresLicense?: boolean; setupRequiresToken?: boolean; prefs?: unknown; can?: unknown; acting?: unknown; welcome?: unknown }): AuthMe {
+export function readAuthMe(body: { user?: PublicUser | null; needsSetup?: boolean; setupRequiresLicense?: boolean; setupRequiresToken?: boolean; setupRequiresEmailCode?: boolean; prefs?: unknown; can?: unknown; acting?: unknown; welcome?: unknown }): AuthMe {
   const acting = parseActingAccount(body.acting);
   return {
     user: body.user ?? null,
     needsSetup: body.needsSetup === true,
     setupRequiresLicense: body.setupRequiresLicense !== false,
     setupRequiresToken: body.setupRequiresToken === true,
+    setupRequiresEmailCode: body.setupRequiresEmailCode !== false,
     prefs: coercePrefs(body.prefs),
     can: acting ? (acting.user ? acting.can : {}) : parseCan(body.can),
     acting,
