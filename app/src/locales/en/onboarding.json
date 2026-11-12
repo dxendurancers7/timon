@@ -59,7 +59,7 @@
         "title": "Use a web API",
         "detail": "DeepSeek API, with a key you paste",
         "hint": "Hosted models, billed per token by the provider.",
-        "deepseek": "DeepSeek's hosted API (deepseek-chat, deepseek-reasoner).",
+        "deepseek": "DeepSeek's hosted API (DeepSeek V4.1 Flash, V4 Pro).",
         "connect": "Add it in {settingsPath}: pick the DeepSeek API preset, then paste your key."
       },
       "legal": "By continuing, you accept the {terms} and acknowledge the {privacy}.",

@@ -175,8 +175,8 @@ export const BACKEND_PRESETS: readonly BackendPreset[] = Object.freeze([
     protocol: 'anthropic',
     baseUrl: 'https://api.deepseek.com/anthropic',
     models: [
-      { slug: 'deepseek-chat', label: 'DeepSeek Chat' },
-      { slug: 'deepseek-reasoner', label: 'DeepSeek Reasoner' },
+      { slug: 'deepseek-flash', label: 'DeepSeek V4.1 Flash' },
+      { slug: 'deepseek-v4-pro', label: 'DeepSeek V4 Pro' },
     ],
     brand: 'deepseek',
   },
