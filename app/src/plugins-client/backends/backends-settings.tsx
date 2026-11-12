@@ -33,8 +33,10 @@ import {
   formOf,
   mergeDiscovered,
   outcomeMessage,
+  presetForm,
   testPayload,
   updatePayload,
+  BACKEND_PRESETS,
   type BackendForm,
   type BackendProtocol,
   type CustomBackend,
@@ -390,10 +392,17 @@ export function BackendsSettings(): ReactElement {
         </DialogContent>
       </Dialog>
 
-      <Button size="sm" className="mt-4" onClick={() => openForm(blankForm())}>
-        <Plus className="mr-1.5 h-3.5 w-3.5" />
-        {t('backendsSettings.add')}
-      </Button>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <Button size="sm" onClick={() => openForm(blankForm())}>
+          <Plus className="mr-1.5 h-3.5 w-3.5" />
+          {t('backendsSettings.add')}
+        </Button>
+        {BACKEND_PRESETS.map((preset) => (
+          <Button key={preset.id} size="sm" variant="outline" onClick={() => openForm(presetForm(preset))}>
+            {t(preset.labelKey)}
+          </Button>
+        ))}
+      </div>
 
       <SidePanel
         open={form !== null}

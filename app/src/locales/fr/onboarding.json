@@ -49,14 +49,22 @@
       },
       "local": {
         "title": "Utiliser des modèles locaux",
-        "detail": "Ollama, sans abonnement, rien ne sort de votre machine",
+        "detail": "Ollama or oMLX, no subscription, nothing leaves your machine",
         "hint": "Vos agents tournent sur les modèles de cet ordinateur.",
         "ollama": "Fait tourner des modèles ouverts (Llama, Qwen, Mistral…) en local.",
-        "connect": "Une fois Ollama lancé, ajoutez-le comme fournisseur dans {settingsPath}."
+        "connect": "Once Ollama or oMLX runs, add it as a provider in {settingsPath}.",
+        "omlx": "Runs MLX models on Apple Silicon through an OpenAI-compatible server."
       },
       "legal": "En continuant, vous acceptez les {terms} et prenez connaissance de la {privacy}.",
       "terms": "Conditions d’utilisation",
-      "privacy": "Politique de confidentialité"
+      "privacy": "Politique de confidentialité",
+      "web": {
+        "title": "Use a web API",
+        "detail": "DeepSeek API, with a key you paste",
+        "hint": "Hosted models, billed per token by the provider.",
+        "deepseek": "DeepSeek's hosted API (deepseek-chat, deepseek-reasoner).",
+        "connect": "Add it in {settingsPath}: pick the DeepSeek API preset, then paste your key."
+      }
     },
     "profile": {
       "title": "Qu’est-ce qui vous amène ?",

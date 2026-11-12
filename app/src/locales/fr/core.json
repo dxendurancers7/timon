@@ -1,17 +1,238 @@
 {
-  "brandLogo": {"menu": "Logo", "productLogo": "Afficher le logo normal (captures d'écran)", "devLogo": "Afficher le logo de dev"},
-  "apps": {"title": "Connecteurs officiels", "subtitle": "Les serveurs MCP des services avec lesquels travaillent vos agents, connectés en un clic.", "count": "{connected} connectés · {total} connecteurs", "loadFailed": "Impossible de charger les connecteurs. Vérifiez que Timon tourne, puis rechargez la page.", "noMatch": "Aucun connecteur ne correspond à cette recherche.", "footer": "Chaque connecteur est un serveur MCP distant hébergé par son éditeur, qui reçoit ce que vos agents lui envoient. Le connecter ne le donne encore à aucun agent : ajoutez-le depuis les serveurs MCP de l’agent. Les agents d’un backend qui ne charge que des serveurs MCP locaux ignorent les connecteurs distants.", "category": {"code": "Code", "data": "Données", "design": "Design", "productivity": "Productivité", "business": "Paiements"}, "status": {"connected": "Connecté", "blocked": "Nom déjà pris"}, "action": {"connect": "Connecter", "finishSignIn": "Terminer la connexion", "disconnect": "Déconnecter", "close": "Fermer"}, "card": {"open": "Ouvrir {name}"}, "details": {"status": {"available": "Non connecté", "connecting": "Connexion…", "consent": "En attente de votre connexion", "connected": "Connecté", "blocked": "Un serveur MCP du même nom existe"}, "examples": "Ce que vous pouvez demander", "keyKept": "La clé est gardée dans le coffre de secrets de Timon et n’est envoyée qu’à ce connecteur.", "vaultOff": "Le coffre de secrets est désactivé : ce connecteur ne peut pas être connecté.", "getKey": "Obtenir une clé", "consentPending": "Connectez-vous sur la page qui s’est ouverte, puis revenez ici.", "openConsent": "Rouvrir la page de connexion", "attachHint": "Connecté comme serveur MCP {id} : ajoutez-le à un agent depuis ses serveurs MCP.", "blockedHint": "Un serveur MCP nommé {id} a été ajouté à la main. Renommez-le ou supprimez-le dans Vos serveurs MCP pour utiliser ce connecteur.", "remoteOnly": "Les agents d’un backend qui ne charge que des serveurs MCP locaux ne reçoivent pas ce connecteur.", "website": "Site", "privacy": "Politique de confidentialité", "terms": "Conditions d’utilisation", "endpoint": "Point d’accès MCP :", "connection": "Connexion", "info": "Informations", "developer": "Développeur", "category": "Catégorie", "signInWith": "Connectez-vous avec votre compte {name} dans le navigateur.", "noAccount": "Aucun compte requis.", "read": "Lire"}, "confirm": {"disconnect": "Déconnecter {name} ?", "disconnectDetail": "Son serveur MCP est supprimé, avec sa clé s’il en a une. Les agents qui l’utilisaient perdent ses outils à leur prochain démarrage."}, "toast": {"connected": "{name} connecté", "consentOpened": "{name} : terminez la connexion sur la page qui s’est ouverte.", "authorized": "Connecteur autorisé", "oauthFailed": "Échec de la connexion : {error}", "connectFailed": "Impossible de connecter {name} : {error}", "disconnected": "{name} déconnecté", "disconnectFailed": "Impossible de déconnecter {name} : {error}"}},
-  "pageToc": {"title": "Sur cette page", "label": "Sections de cette page"},
-  "mcpTab": {"yourServers": "Vos serveurs MCP"},
-  "mcpTab": {"yourServers": "Vos serveurs MCP"},
-  "roles": {"modified": "Modifié", "reset": "Réinitialiser le prompt", "resetConfirm": "Restaurer le prompt livré pour « {id} » ? Les modifications non enregistrées seront aussi perdues.", "resetDone": "Prompt de « {id} » réinitialisé", "builtinPromptHint": "Ce prompt s’applique à tous les agents utilisant ce rôle. Seul le prompt peut être modifié."},
-  "chatEntry": { "unavailable": "Impossible de trouver l’agent principal. Vérifiez vos agents ou réessayez.", "retry": "Réessayer", "openMain": "Parler à l’agent principal", "manageAgents": "Ouvrir les agents", "unreadable": "La liste des agents est illisible ({status}).", "unreadableNoStatus": "La liste des agents est illisible (daemon injoignable).", "undesignated": "Aucun agent n’est désigné comme agent principal. Choisissez-en un :", "makeMain": "Faire de {name} l’agent principal", "makeMainFailed": "Impossible de désigner {name} : {error}", "none": "Cette installation n’a aucun orchestrateur hors projet. Créez-en un ou donnez le rôle d’orchestrateur à un agent sans projet." },
-  "skillForm": {"unauthorized": "Reconnectez-vous pour enregistrer ce skill.", "forbidden": "Votre compte ne peut pas gérer les skills.", "failed": "Impossible d’enregistrer le skill. Vérifiez l’identifiant et les instructions, puis réessayez.", "network": "Timon est injoignable. Vérifiez votre connexion et réessayez.", "idLabel": "Identifiant du skill", "idError": "Saisissez un identifiant avec des minuscules, chiffres, « . », « _ » ou « - ». Il ne peut pas être « . » ou « .. ».", "contentError": "Saisissez des instructions avant d’enregistrer le skill."},
-  "dateTimePicker": {"clear": "Effacer la date", "time": "Heure", "done": "OK"},
-  "skillIsland": {"notFound": "Skill /{id} introuvable.", "loadFailed": "Impossible de charger le skill.", "saved": "/{id} enregistré", "pathCopied": "Chemin copié", "copyFailed": "Impossible de copier le chemin.", "copyPath": "Copier le chemin", "delete": "Supprimer le skill", "deleteConfirm": "Supprimer /{id} ?\n{path}", "deleted": "/{id} supprimé", "deleteFailed": "Impossible de supprimer le skill.", "command": "commande", "skill": "skill", "readOnly": "lecture seule", "storedAt": "Stocké dans {path}"},
-  "skillAttach": {"title": "Qui reçoit ce skill", "hint": "Le rattachement le plus étroit décide : celui d'un agent l'emporte sur son rôle, son rôle sur son projet, son projet sur tous les agents. Un changement s'applique au prochain lancement des agents concernés.", "needsManage": "Changer qui reçoit ce skill demande la permission agents:manage. Demandez-la à un administrateur.", "needsPrivileged": "Rattacher ce skill à tous les agents, à un projet ou à un rôle demande la permission agents:privileged-config. Demandez-la à un administrateur. Vous pouvez toujours le rattacher à un agent.", "loading": "Chargement…", "loadFailed": "Impossible de lire qui reçoit ce skill.", "empty": "Aucun agent ne reçoit encore ce skill.", "everyAgent": "Tous les agents", "scope": {"global": "Tous les agents", "project": "Projet", "role": "Rôle d'agent", "agent": "Agent"}, "kind": {"include": "Au catalogue", "import": "Importé en entier", "exclude": "Exclu"}, "kindOf": "Mode pour {target}", "remove": "Retirer le rattachement de {target}", "scopeLabel": "Portée", "targetLabel": "Cible", "kindLabel": "Mode", "targetPlaceholder": "Choisir…", "noTarget": "Plus rien à choisir", "globalTaken": "Déjà rattaché à tous les agents : changez son mode dans la liste.", "add": "Rattacher", "adding": "Enregistrement…", "saved": "/{id} rattaché. S'applique au prochain lancement des agents.", "removed": "Rattachement de /{id} retiré. S'applique au prochain lancement des agents.", "error": {"unauthorized": "Reconnectez-vous pour changer qui reçoit ce skill.", "forbidden": "Votre compte ne peut pas modifier ce rattachement.", "forbiddenReason": "Refusé : {reason}", "notFound": {"project": "Le projet « {target} » n'existe pas. La liste a été rechargée : choisissez-en un autre.", "role": "Le rôle d'agent « {target} » n'existe pas. La liste a été rechargée : choisissez-en un autre.", "agent": "L'agent « {target} » n'existe pas. La liste a été rechargée : choisissez-en un autre.", "skill": "Ce skill n'existe plus.", "attachment": "Ce rattachement n'existe plus. La liste a été rechargée.", "unknown": "Introuvable."}, "invalid": "Ce rattachement n'est pas valide.", "failed": "Impossible d'enregistrer le rattachement. Réessayez.", "network": "Impossible de joindre {brand}. Vérifiez votre connexion et réessayez."}},
-  "skillMission": {"unavailable": "Non disponible en mission", "unavailableHint": "Les missions ne chargent pas ~/.claude. Importez ce skill dans {brand} pour l’attacher à un agent.", "notAttachable": "Non disponible en mission : importez-le dans {brand} depuis la page Skills pour l’attacher", "import": "Importer dans {brand}", "importTitle": "Importer /{id} dans {brand}", "importHint": "Copie le dossier du skill dans {path}. La copie est un skill {brand} attachable à un agent ; l’original reste en place.", "importPluginHint": "Seul ce skill est copié, jamais les hooks ni les serveurs MCP du plugin.", "idLabel": "ID de la copie", "importing": "Import…", "imported": "Importé sous /{id}", "cancel": "Annuler", "idError": "Saisissez un ID en lettres minuscules, chiffres, « . », « _ » ou « - », commençant par une lettre ou un chiffre.", "exists": "Un skill {brand} porte déjà cet ID. Choisissez-en un autre.", "needsPrivileged": "Ce skill pré-autorise des outils : l’importer exige la permission agents:privileged-config.", "forbidden": "Votre compte ne peut pas gérer les skills.", "unauthorized": "Reconnectez-vous pour importer ce skill.", "tooLarge": "Le dossier de ce skill est trop volumineux pour être importé.", "notFound": "Ce skill n’existe plus.", "failed": "Impossible d’importer le skill.", "network": "Impossible de joindre {brand}. Vérifiez votre connexion et réessayez."},
-  "skillsPage": {"source": {"claude-user": "global", "project": "projet", "plugin": "plugin"}, "sectionTimon": "Skills {brand}", "sectionTimonHint": "~/.timon/skills — attachables à un agent, au catalogue ou importés en entier", "sectionUser": "Skills Claude globaux", "sectionUserHint": "~/.claude/skills et ~/.claude/commands — non chargés en mission, importez-en un dans {brand} pour l’attacher", "sectionProject": "Skills de projet", "sectionProjectHint": "<projet>/.claude — chargés nativement seulement par un agent Claude Code qui travaille dans ce projet", "sectionPlugin": "Plugins", "sectionPluginHint": "fournis par les plugins installés — lecture seule, non chargés en mission", "search": "Rechercher par id, titre ou description…", "count": "{count} skills disponibles", "newSkill": "Nouveau skill {brand}", "empty": "Aucun skill pour l’instant. Créez-en un avec « Nouveau skill {brand} » : il sera stocké dans {path}.", "shadowed": "masqué", "readOnly": "Lecture seule", "createTitle": "Nouveau skill {brand}", "createHint": "Stocké dans {path}. Il s’ouvre dans l’éditeur une fois créé.", "create": "Créer", "cancel": "Annuler", "creating": "Création…", "exists": "Un skill {brand} porte déjà cet ID.", "noWorkspace": "Ouvrez une page qui a un espace pour afficher ce skill.", "template": "# {id}\n\nÉcrivez les instructions que l’agent doit suivre quand ce skill est actif.\n", "title": "Catalogue des skills", "lead": "Des fichiers d’instructions réutilisables. Attachez-les à un agent depuis", "leadLink": "la configuration de l’agent"},
+  "brandLogo": {
+    "menu": "Logo",
+    "productLogo": "Afficher le logo normal (captures d'écran)",
+    "devLogo": "Afficher le logo de dev"
+  },
+  "apps": {
+    "title": "Connecteurs officiels",
+    "subtitle": "Les serveurs MCP des services avec lesquels travaillent vos agents, connectés en un clic.",
+    "count": "{connected} connectés · {total} connecteurs",
+    "loadFailed": "Impossible de charger les connecteurs. Vérifiez que Timon tourne, puis rechargez la page.",
+    "noMatch": "Aucun connecteur ne correspond à cette recherche.",
+    "footer": "Chaque connecteur est un serveur MCP distant hébergé par son éditeur, qui reçoit ce que vos agents lui envoient. Le connecter ne le donne encore à aucun agent : ajoutez-le depuis les serveurs MCP de l’agent. Les agents d’un backend qui ne charge que des serveurs MCP locaux ignorent les connecteurs distants.",
+    "category": {
+      "code": "Code",
+      "data": "Données",
+      "design": "Design",
+      "productivity": "Productivité",
+      "business": "Paiements"
+    },
+    "status": {
+      "connected": "Connecté",
+      "blocked": "Nom déjà pris"
+    },
+    "action": {
+      "connect": "Connecter",
+      "finishSignIn": "Terminer la connexion",
+      "disconnect": "Déconnecter",
+      "close": "Fermer"
+    },
+    "card": {
+      "open": "Ouvrir {name}"
+    },
+    "details": {
+      "status": {
+        "available": "Non connecté",
+        "connecting": "Connexion…",
+        "consent": "En attente de votre connexion",
+        "connected": "Connecté",
+        "blocked": "Un serveur MCP du même nom existe"
+      },
+      "examples": "Ce que vous pouvez demander",
+      "keyKept": "La clé est gardée dans le coffre de secrets de Timon et n’est envoyée qu’à ce connecteur.",
+      "vaultOff": "Le coffre de secrets est désactivé : ce connecteur ne peut pas être connecté.",
+      "getKey": "Obtenir une clé",
+      "consentPending": "Connectez-vous sur la page qui s’est ouverte, puis revenez ici.",
+      "openConsent": "Rouvrir la page de connexion",
+      "attachHint": "Connecté comme serveur MCP {id} : ajoutez-le à un agent depuis ses serveurs MCP.",
+      "blockedHint": "Un serveur MCP nommé {id} a été ajouté à la main. Renommez-le ou supprimez-le dans Vos serveurs MCP pour utiliser ce connecteur.",
+      "remoteOnly": "Les agents d’un backend qui ne charge que des serveurs MCP locaux ne reçoivent pas ce connecteur.",
+      "website": "Site",
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d’utilisation",
+      "endpoint": "Point d’accès MCP :",
+      "connection": "Connexion",
+      "info": "Informations",
+      "developer": "Développeur",
+      "category": "Catégorie",
+      "signInWith": "Connectez-vous avec votre compte {name} dans le navigateur.",
+      "noAccount": "Aucun compte requis.",
+      "read": "Lire"
+    },
+    "confirm": {
+      "disconnect": "Déconnecter {name} ?",
+      "disconnectDetail": "Son serveur MCP est supprimé, avec sa clé s’il en a une. Les agents qui l’utilisaient perdent ses outils à leur prochain démarrage."
+    },
+    "toast": {
+      "connected": "{name} connecté",
+      "consentOpened": "{name} : terminez la connexion sur la page qui s’est ouverte.",
+      "authorized": "Connecteur autorisé",
+      "oauthFailed": "Échec de la connexion : {error}",
+      "connectFailed": "Impossible de connecter {name} : {error}",
+      "disconnected": "{name} déconnecté",
+      "disconnectFailed": "Impossible de déconnecter {name} : {error}"
+    }
+  },
+  "pageToc": {
+    "title": "Sur cette page",
+    "label": "Sections de cette page"
+  },
+  "mcpTab": {
+    "yourServers": "Vos serveurs MCP"
+  },
+  "roles": {
+    "modified": "Modifié",
+    "reset": "Réinitialiser le prompt",
+    "resetConfirm": "Restaurer le prompt livré pour « {id} » ? Les modifications non enregistrées seront aussi perdues.",
+    "resetDone": "Prompt de « {id} » réinitialisé",
+    "builtinPromptHint": "Ce prompt s’applique à tous les agents utilisant ce rôle. Seul le prompt peut être modifié."
+  },
+  "chatEntry": {
+    "unavailable": "Impossible de trouver l’agent principal. Vérifiez vos agents ou réessayez.",
+    "retry": "Réessayer",
+    "openMain": "Parler à l’agent principal",
+    "manageAgents": "Ouvrir les agents",
+    "unreadable": "La liste des agents est illisible ({status}).",
+    "unreadableNoStatus": "La liste des agents est illisible (daemon injoignable).",
+    "undesignated": "Aucun agent n’est désigné comme agent principal. Choisissez-en un :",
+    "makeMain": "Faire de {name} l’agent principal",
+    "makeMainFailed": "Impossible de désigner {name} : {error}",
+    "none": "Cette installation n’a aucun orchestrateur hors projet. Créez-en un ou donnez le rôle d’orchestrateur à un agent sans projet."
+  },
+  "skillForm": {
+    "unauthorized": "Reconnectez-vous pour enregistrer ce skill.",
+    "forbidden": "Votre compte ne peut pas gérer les skills.",
+    "failed": "Impossible d’enregistrer le skill. Vérifiez l’identifiant et les instructions, puis réessayez.",
+    "network": "Timon est injoignable. Vérifiez votre connexion et réessayez.",
+    "idLabel": "Identifiant du skill",
+    "idError": "Saisissez un identifiant avec des minuscules, chiffres, « . », « _ » ou « - ». Il ne peut pas être « . » ou « .. ».",
+    "contentError": "Saisissez des instructions avant d’enregistrer le skill."
+  },
+  "dateTimePicker": {
+    "clear": "Effacer la date",
+    "time": "Heure",
+    "done": "OK"
+  },
+  "skillIsland": {
+    "notFound": "Skill /{id} introuvable.",
+    "loadFailed": "Impossible de charger le skill.",
+    "saved": "/{id} enregistré",
+    "pathCopied": "Chemin copié",
+    "copyFailed": "Impossible de copier le chemin.",
+    "copyPath": "Copier le chemin",
+    "delete": "Supprimer le skill",
+    "deleteConfirm": "Supprimer /{id} ?\n{path}",
+    "deleted": "/{id} supprimé",
+    "deleteFailed": "Impossible de supprimer le skill.",
+    "command": "commande",
+    "skill": "skill",
+    "readOnly": "lecture seule",
+    "storedAt": "Stocké dans {path}"
+  },
+  "skillAttach": {
+    "title": "Qui reçoit ce skill",
+    "hint": "Le rattachement le plus étroit décide : celui d'un agent l'emporte sur son rôle, son rôle sur son projet, son projet sur tous les agents. Un changement s'applique au prochain lancement des agents concernés.",
+    "needsManage": "Changer qui reçoit ce skill demande la permission agents:manage. Demandez-la à un administrateur.",
+    "needsPrivileged": "Rattacher ce skill à tous les agents, à un projet ou à un rôle demande la permission agents:privileged-config. Demandez-la à un administrateur. Vous pouvez toujours le rattacher à un agent.",
+    "loading": "Chargement…",
+    "loadFailed": "Impossible de lire qui reçoit ce skill.",
+    "empty": "Aucun agent ne reçoit encore ce skill.",
+    "everyAgent": "Tous les agents",
+    "scope": {
+      "global": "Tous les agents",
+      "project": "Projet",
+      "role": "Rôle d'agent",
+      "agent": "Agent"
+    },
+    "kind": {
+      "include": "Au catalogue",
+      "import": "Importé en entier",
+      "exclude": "Exclu"
+    },
+    "kindOf": "Mode pour {target}",
+    "remove": "Retirer le rattachement de {target}",
+    "scopeLabel": "Portée",
+    "targetLabel": "Cible",
+    "kindLabel": "Mode",
+    "targetPlaceholder": "Choisir…",
+    "noTarget": "Plus rien à choisir",
+    "globalTaken": "Déjà rattaché à tous les agents : changez son mode dans la liste.",
+    "add": "Rattacher",
+    "adding": "Enregistrement…",
+    "saved": "/{id} rattaché. S'applique au prochain lancement des agents.",
+    "removed": "Rattachement de /{id} retiré. S'applique au prochain lancement des agents.",
+    "error": {
+      "unauthorized": "Reconnectez-vous pour changer qui reçoit ce skill.",
+      "forbidden": "Votre compte ne peut pas modifier ce rattachement.",
+      "forbiddenReason": "Refusé : {reason}",
+      "notFound": {
+        "project": "Le projet « {target} » n'existe pas. La liste a été rechargée : choisissez-en un autre.",
+        "role": "Le rôle d'agent « {target} » n'existe pas. La liste a été rechargée : choisissez-en un autre.",
+        "agent": "L'agent « {target} » n'existe pas. La liste a été rechargée : choisissez-en un autre.",
+        "skill": "Ce skill n'existe plus.",
+        "attachment": "Ce rattachement n'existe plus. La liste a été rechargée.",
+        "unknown": "Introuvable."
+      },
+      "invalid": "Ce rattachement n'est pas valide.",
+      "failed": "Impossible d'enregistrer le rattachement. Réessayez.",
+      "network": "Impossible de joindre {brand}. Vérifiez votre connexion et réessayez."
+    }
+  },
+  "skillMission": {
+    "unavailable": "Non disponible en mission",
+    "unavailableHint": "Les missions ne chargent pas ~/.claude. Importez ce skill dans {brand} pour l’attacher à un agent.",
+    "notAttachable": "Non disponible en mission : importez-le dans {brand} depuis la page Skills pour l’attacher",
+    "import": "Importer dans {brand}",
+    "importTitle": "Importer /{id} dans {brand}",
+    "importHint": "Copie le dossier du skill dans {path}. La copie est un skill {brand} attachable à un agent ; l’original reste en place.",
+    "importPluginHint": "Seul ce skill est copié, jamais les hooks ni les serveurs MCP du plugin.",
+    "idLabel": "ID de la copie",
+    "importing": "Import…",
+    "imported": "Importé sous /{id}",
+    "cancel": "Annuler",
+    "idError": "Saisissez un ID en lettres minuscules, chiffres, « . », « _ » ou « - », commençant par une lettre ou un chiffre.",
+    "exists": "Un skill {brand} porte déjà cet ID. Choisissez-en un autre.",
+    "needsPrivileged": "Ce skill pré-autorise des outils : l’importer exige la permission agents:privileged-config.",
+    "forbidden": "Votre compte ne peut pas gérer les skills.",
+    "unauthorized": "Reconnectez-vous pour importer ce skill.",
+    "tooLarge": "Le dossier de ce skill est trop volumineux pour être importé.",
+    "notFound": "Ce skill n’existe plus.",
+    "failed": "Impossible d’importer le skill.",
+    "network": "Impossible de joindre {brand}. Vérifiez votre connexion et réessayez."
+  },
+  "skillsPage": {
+    "source": {
+      "claude-user": "global",
+      "project": "projet",
+      "plugin": "plugin"
+    },
+    "sectionTimon": "Skills {brand}",
+    "sectionTimonHint": "~/.timon/skills — attachables à un agent, au catalogue ou importés en entier",
+    "sectionUser": "Skills Claude globaux",
+    "sectionUserHint": "~/.claude/skills et ~/.claude/commands — non chargés en mission, importez-en un dans {brand} pour l’attacher",
+    "sectionProject": "Skills de projet",
+    "sectionProjectHint": "<projet>/.claude — chargés nativement seulement par un agent Claude Code qui travaille dans ce projet",
+    "sectionPlugin": "Plugins",
+    "sectionPluginHint": "fournis par les plugins installés — lecture seule, non chargés en mission",
+    "search": "Rechercher par id, titre ou description…",
+    "count": "{count} skills disponibles",
+    "newSkill": "Nouveau skill {brand}",
+    "empty": "Aucun skill pour l’instant. Créez-en un avec « Nouveau skill {brand} » : il sera stocké dans {path}.",
+    "shadowed": "masqué",
+    "readOnly": "Lecture seule",
+    "createTitle": "Nouveau skill {brand}",
+    "createHint": "Stocké dans {path}. Il s’ouvre dans l’éditeur une fois créé.",
+    "create": "Créer",
+    "cancel": "Annuler",
+    "creating": "Création…",
+    "exists": "Un skill {brand} porte déjà cet ID.",
+    "noWorkspace": "Ouvrez une page qui a un espace pour afficher ce skill.",
+    "template": "# {id}\n\nÉcrivez les instructions que l’agent doit suivre quand ce skill est actif.\n",
+    "title": "Catalogue des skills",
+    "lead": "Des fichiers d’instructions réutilisables. Attachez-les à un agent depuis",
+    "leadLink": "la configuration de l’agent"
+  },
   "kanbanDelete": {
     "confirm": "Supprimer cette tâche ? Cette action est irréversible.",
     "success": "Tâche supprimée.",
@@ -32,8 +253,15 @@
     "failed": "Impossible de supprimer la tâche. Réessayez.",
     "network": "Timon est injoignable. Vérifiez votre connexion et réessayez."
   },
-  "starterWidgets": {"loading": "Chargement...", "failed": "Chargement impossible.", "projectsEmpty": "Aucun projet. Créez un projet.", "missionsEmpty": "Aucune mission pour le moment."},
-  "projectsRoute": {"unavailable": "Le module Projets est d\u00e9sactiv\u00e9 : sa grille n'est pas mont\u00e9e."},
+  "starterWidgets": {
+    "loading": "Chargement...",
+    "failed": "Chargement impossible.",
+    "projectsEmpty": "Aucun projet. Créez un projet.",
+    "missionsEmpty": "Aucune mission pour le moment."
+  },
+  "projectsRoute": {
+    "unavailable": "Le module Projets est désactivé : sa grille n'est pas montée."
+  },
   "vaultNotConfigured": "Choisissez votre vault dans les paramètres pour afficher vos notes.",
   "bots": {
     "back": "Retour",
@@ -45,7 +273,7 @@
     "search": "Rechercher",
     "clearSearch": "Effacer la recherche",
     "noTeam": "Sans team",
-    "noTeamHint": "Ce TIM n'appartient \u00e0 aucune team.",
+    "noTeamHint": "Ce TIM n'appartient à aucune team.",
     "memberOf": "Team : {team}",
     "teams": "Teams",
     "newTeam": "Nouvelle team",
@@ -53,26 +281,26 @@
     "deleteTeam": "Supprimer la team",
     "teamName": "Nom",
     "teamColor": "Couleur",
-    "create": "Cr\u00e9er",
+    "create": "Créer",
     "save": "Enregistrer",
-    "teamCreated": "Team cr\u00e9\u00e9e",
-    "teamRenamed": "Team enregistr\u00e9e",
-    "teamDeleted": "Team \u00ab\u00a0{team}\u00a0\u00bb supprim\u00e9e \u2014 ses TIMs sont conserv\u00e9s, d\u00e9sormais sans team",
-    "teamsExplain": "Les TIMs d'une m\u00eame team peuvent se parler ; ceux de teams diff\u00e9rentes, non.",
-    "moveToTeam": "D\u00e9placer vers une team",
+    "teamCreated": "Team créée",
+    "teamRenamed": "Team enregistrée",
+    "teamDeleted": "Team « {team} » supprimée — ses TIMs sont conservés, désormais sans team",
+    "teamsExplain": "Les TIMs d'une même team peuvent se parler ; ceux de teams différentes, non.",
+    "moveToTeam": "Déplacer vers une team",
     "leaveTeam": "Retirer de sa team",
     "forbidden": "Ton compte n'a pas le droit de modifier les teams.",
     "daemonUnreachable": "Timon est injoignable.",
-    "writeFailed": "La modification a \u00e9t\u00e9 refus\u00e9e.",
+    "writeFailed": "La modification a été refusée.",
     "newBot": "Nouveau TIM",
     "welcomeConversation": "Accueil de {name}",
-    "welcomeSkip": "Passer l\u2019accueil",
-    "emptyNoBots": "Aucun TIM pour l'instant. Cr\u00e9es-en un, puis parle-lui ici.",
+    "welcomeSkip": "Passer l’accueil",
+    "emptyNoBots": "Aucun TIM pour l'instant. Crées-en un, puis parle-lui ici.",
     "talksWithTeam": "{bot} est dans la team {team} : il ne parle qu'aux TIMs de cette team.",
-    "talksWithAll": "{bot} n'est dans aucune team : il peut parler \u00e0 tous les TIMs.",
-    "crossTeamRefused": "Refus\u00e9 : {from} et {to} ne sont pas dans la m\u00eame team.",
+    "talksWithAll": "{bot} n'est dans aucune team : il peut parler à tous les TIMs.",
+    "crossTeamRefused": "Refusé : {from} et {to} ne sont pas dans la même team.",
     "openRail": "TIMs",
-    "emptyTitle": "Choisis un TIM \u00e0 gauche pour lui parler.",
+    "emptyTitle": "Choisis un TIM à gauche pour lui parler.",
     "showRail": "Afficher la liste des TIMs"
   },
   "workingAgents": {
@@ -124,7 +352,6 @@
     "skills": "Skills",
     "mcp": "MCP",
     "connectors": "Connecteurs",
-    "connectors": "Connecteurs",
     "secrets": "Secrets",
     "mainNav": "Navigation principale",
     "collapseNav": "Réduire la nav",
@@ -153,7 +380,20 @@
       "cancelled": "Déplacement de {page} annulé."
     }
   },
-  "workflows": {"agent": "Agent pilote", "agentHint": "Un agent existant : il répond dans le chat du canvas et est réveillé à chaque run.", "agentRequired": "Choisis l’agent qui pilote ce workflow.", "noAgent": "Aucun agent assigné", "agentSaveError": "Impossible de changer l’agent.", "runNeedsAgent": "Assigne un agent pilote dans les réglages avant de lancer.", "runNeedsPublish": "Publie le workflow pour lancer une version.", "issuesTitle": "Le workflow ne peut pas encore tourner.", "issuesHint": "Corrige les nœuds ci-dessous, puis publie ou relance.", "triggerNativeHint": "Ce nœud est un trigger natif : journal, limite de débit et filtre vivent sur la page Triggers.", "regenerateSecret": "Régénérer le secret de signature", "secretShownOnce": "Secret de signature, affiché une seule fois : donne-le à l’expéditeur.", "secretError": "Impossible de régénérer le secret.", 
+  "workflows": {
+    "agent": "Agent pilote",
+    "agentHint": "Un agent existant : il répond dans le chat du canvas et est réveillé à chaque run.",
+    "agentRequired": "Choisis l’agent qui pilote ce workflow.",
+    "noAgent": "Aucun agent assigné",
+    "agentSaveError": "Impossible de changer l’agent.",
+    "runNeedsAgent": "Assigne un agent pilote dans les réglages avant de lancer.",
+    "runNeedsPublish": "Publie le workflow pour lancer une version.",
+    "issuesTitle": "Le workflow ne peut pas encore tourner.",
+    "issuesHint": "Corrige les nœuds ci-dessous, puis publie ou relance.",
+    "triggerNativeHint": "Ce nœud est un trigger natif : journal, limite de débit et filtre vivent sur la page Triggers.",
+    "regenerateSecret": "Régénérer le secret de signature",
+    "secretShownOnce": "Secret de signature, affiché une seule fois : donne-le à l’expéditeur.",
+    "secretError": "Impossible de régénérer le secret.",
     "title": "Workflows",
     "description": "Construisez, exécutez et inspectez des flux d’agents autonomes.",
     "new": "Nouveau workflow",
@@ -220,7 +460,6 @@
     "nativeNone": "Aucun trigger natif ne lance ce nœud. Ajoutez l’action « Lancer un workflow » à un trigger :",
     "nativeOpen": "ouvrir Triggers",
     "nativeDisabled": "désactivé",
-    
     "connections": "Connexions",
     "noConnections": "Pas encore connecté. Tirez depuis un port vers un autre nœud.",
     "incoming": "Entrantes",
@@ -429,7 +668,9 @@
       "noDelay": "Aucun délai",
       "noTemplate": "Aucun gabarit"
     },
-    "fields": {"slug": "Route", "auth": "Signature", 
+    "fields": {
+      "slug": "Route",
+      "auth": "Signature",
       "cron": "Cron",
       "tz": "Fuseau horaire",
       "kind": "Type",
@@ -707,7 +948,11 @@
     "downgradeCancelled": "Licence actuelle conservée."
   },
   "notifications": {
-    "kind": { "alert": "Alerte", "action_required": "Besoin de toi", "report": "Rapport" },
+    "kind": {
+      "alert": "Alerte",
+      "action_required": "Besoin de toi",
+      "report": "Rapport"
+    },
     "urgent": "Urgent",
     "dismissed": "Lue",
     "copy": "Copier",
@@ -739,13 +984,32 @@
       "listen": "Écouter {sound}",
       "enable": "Son pour « {event} »",
       "event": {
-        "taskStarted": { "label": "Task démarrée", "description": "Une de vos tasks Kanban commence à s'exécuter : une fois par task, pas à chaque relance. Les suites de relecture, de merge et de doc restent silencieuses.", "toast": "Afficher aussi une notification", "toastDescription": "Un avis à l'écran avec le titre de la task, même son coupé." },
-        "taskDone": { "label": "Task terminée", "description": "Une task Kanban passe en terminée." },
-        "taskBlocked": { "label": "Task bloquée ou en échec", "description": "Une task Kanban s'arrête : bloquée, en échec ou à court de quota." },
-        "missionDone": { "label": "Mission terminée", "description": "Un agent termine son tour dans une conversation que vous avez lancée — pas les missions des tasks Kanban, qui ont leurs propres sons." },
-        "approval": { "label": "Approbation demandée", "description": "Un agent t'attend : une permission ou une carte de question." }
+        "taskStarted": {
+          "label": "Task démarrée",
+          "description": "Une de vos tasks Kanban commence à s'exécuter : une fois par task, pas à chaque relance. Les suites de relecture, de merge et de doc restent silencieuses.",
+          "toast": "Afficher aussi une notification",
+          "toastDescription": "Un avis à l'écran avec le titre de la task, même son coupé."
+        },
+        "taskDone": {
+          "label": "Task terminée",
+          "description": "Une task Kanban passe en terminée."
+        },
+        "taskBlocked": {
+          "label": "Task bloquée ou en échec",
+          "description": "Une task Kanban s'arrête : bloquée, en échec ou à court de quota."
+        },
+        "missionDone": {
+          "label": "Mission terminée",
+          "description": "Un agent termine son tour dans une conversation que vous avez lancée — pas les missions des tasks Kanban, qui ont leurs propres sons."
+        },
+        "approval": {
+          "label": "Approbation demandée",
+          "description": "Un agent t'attend : une permission ou une carte de question."
+        }
       },
-      "toast": { "taskStarted": "Task démarrée" },
+      "toast": {
+        "taskStarted": "Task démarrée"
+      },
       "custom": {
         "option": "Mon fichier",
         "browse": "Choisir un fichier son pour « {event} »",
@@ -1355,7 +1619,9 @@
       "plugins": "Plugins"
     },
     "tab": {
-      "plugins": { "developer": "Mode développeur" },
+      "plugins": {
+        "developer": "Mode développeur"
+      },
       "instructions": {
         "preamble": "Préambule Timon",
         "global": "Instructions globales"
@@ -1421,7 +1687,9 @@
     "countOne": "{count} résultat",
     "countOther": "{count} résultats",
     "tabKeywords": {
-      "plugins": { "developer": "mode développeur plugin non signé signature charger local confiance code developer unsigned" },
+      "plugins": {
+        "developer": "mode développeur plugin non signé signature charger local confiance code developer unsigned"
+      },
       "interface": {
         "appearance": "thème sombre clair mode couleurs palette apparence",
         "language": "langue locale français anglais english traduction",
@@ -1692,7 +1960,11 @@
     "orgTitle": "Organisation",
     "orgHint": "Glissez un agent sur un autre pour changer son responsable. Glissez le lead d'un projet sur un pôle pour y déplacer le projet.",
     "orgActions": "Actions pour {name}",
-    "orgRootDrop": "Déposez ici pour remettre un agent sous son responsable par défaut", "mainSeatEmpty": "Aucun orchestrateur principal", "mainSeatEmptyHint": "Les agents sans responsable restent à la racine tant que personne n'occupe la place.", "mainSeatNoCandidate": "Aucun agent ne peut occuper la place : donnez le rôle d'orchestrateur à un agent sans projet.", "mainSeatSet": "Définir {name} comme orchestrateur principal"
+    "orgRootDrop": "Déposez ici pour remettre un agent sous son responsable par défaut",
+    "mainSeatEmpty": "Aucun orchestrateur principal",
+    "mainSeatEmptyHint": "Les agents sans responsable restent à la racine tant que personne n'occupe la place.",
+    "mainSeatNoCandidate": "Aucun agent ne peut occuper la place : donnez le rôle d'orchestrateur à un agent sans projet.",
+    "mainSeatSet": "Définir {name} comme orchestrateur principal"
   },
   "chatPage": {
     "allowSession": "Autoriser pour cette session",
@@ -1819,7 +2091,7 @@
     "steerUnavailableQueued": "cet agent ne peut pas être réorienté pour l'instant — message mis en file pour la fin du tour",
     "messageQueuedInline": "message en attente — il partira à la fin du tour en cours",
     "voiceDictationUnavailable": "La dictée vocale n'est pas disponible dans ce navigateur.",
-    "voiceDictationDesktopUnavailable": "La dict\u00e9e vocale n'est pas disponible dans cette application desktop : mettez Timon \u00e0 jour, ou cet ordinateur n'est pas pris en charge. Elle fonctionne quand Timon est ouvert dans Chrome ou Edge.",
+    "voiceDictationDesktopUnavailable": "La dictée vocale n'est pas disponible dans cette application desktop : mettez Timon à jour, ou cet ordinateur n'est pas pris en charge. Elle fonctionne quand Timon est ouvert dans Chrome ou Edge.",
     "dictationUnavailable": "Dictée indisponible : {error}",
     "messagePlaceholder": "Message {name}…",
     "stopDictation": "Arrêter la dictée",
@@ -2463,7 +2735,14 @@
       "noMatch": "Aucun widget ne correspond.",
       "empty": "Tous les widgets sont déjà à l'écran.",
       "pages": "Pages",
-      "page": {"all": "Tous", "cockpit": "Cockpit", "chat": "Chat", "agents": "Agents", "sidebars": "Barres latérales", "topbar": "Barre du haut"},
+      "page": {
+        "all": "Tous",
+        "cockpit": "Cockpit",
+        "chat": "Chat",
+        "agents": "Agents",
+        "sidebars": "Barres latérales",
+        "topbar": "Barre du haut"
+      },
       "origin": "{surface} · {plugin}"
     },
     "surface": {
@@ -2740,7 +3019,10 @@
     "timelineLabel": "Étapes d'injection, dans l'ordre d'envoi",
     "pickStep": "Choisis une étape pour la lire.",
     "total": "Total",
-    "view": { "rendered": "Rendu", "source": "Source" },
+    "view": {
+      "rendered": "Rendu",
+      "source": "Source"
+    },
     "origin": {
       "timon": "timon",
       "user": "toi",
@@ -2754,7 +3036,10 @@
     "save": "Enregistrer",
     "cancel": "Annuler",
     "editor": "Modifier cette injection",
-    "skillMode": { "include": "catalogue", "import": "importé" },
+    "skillMode": {
+      "include": "catalogue",
+      "import": "importé"
+    },
     "skillVia": {
       "global": "tous les agents",
       "project": "projet",
@@ -2907,26 +3192,26 @@
     "logsFolderHint": "Un fichier par jour pour le daemon et l’application, gardé 14 jours par défaut (réglage « Log retention »). Les lignes les plus récentes sont à la fin de chaque fichier."
   },
   "desktopUninstall": {
-  "category": "Application de bureau",
-  "title": "Désinstaller Timon",
-  "description": "Arrête les agents, workflows et navigateurs sur cet ordinateur, retire le service et désactive le lancement automatique. Les PWA connectées à cette instance seront déconnectées.",
-  "dataPath": "Dossier des données de cette installation",
-  "dataChoice": "Que faire de vos données ?",
-  "keep": "Conserver mes données (recommandé)",
-  "keepDescription": "Gardez agents, conversations, réglages, identifiants et profils navigateur pour une réinstallation. Les copies du programme utilisées par le service seront retirées.",
-  "delete": "Tout supprimer",
-  "deleteDescription": "Efface définitivement tout le contenu du dossier Timon affiché ci-dessus, notamment agents, conversations, réglages, secrets, cookies et profils navigateur. Cette action est irréversible.",
-  "external": "Les dossiers de projets et les configurations externes (Claude, Codex, etc.) situés en dehors du dossier Timon sont conservés. Les liens symboliques vers des dossiers externes ne sont pas suivis.",
-  "confirmation": "Saisissez SUPPRIMER pour autoriser l’effacement définitif.",
-  "finish": {
-    "mac": "Une fois Timon fermé et le nettoyage terminé, déplacez Timon.app dans la corbeille depuis le Finder.",
-    "windows": "Une fois le nettoyage terminé, retirez Timon depuis les paramètres Applications de Windows.",
-    "appimage": "Une fois le nettoyage terminé, supprimez le fichier AppImage.",
-    "linux": "Une fois le nettoyage terminé, retirez le paquet Timon avec le gestionnaire de logiciels de votre distribution."
+    "category": "Application de bureau",
+    "title": "Désinstaller Timon",
+    "description": "Arrête les agents, workflows et navigateurs sur cet ordinateur, retire le service et désactive le lancement automatique. Les PWA connectées à cette instance seront déconnectées.",
+    "dataPath": "Dossier des données de cette installation",
+    "dataChoice": "Que faire de vos données ?",
+    "keep": "Conserver mes données (recommandé)",
+    "keepDescription": "Gardez agents, conversations, réglages, identifiants et profils navigateur pour une réinstallation. Les copies du programme utilisées par le service seront retirées.",
+    "delete": "Tout supprimer",
+    "deleteDescription": "Efface définitivement tout le contenu du dossier Timon affiché ci-dessus, notamment agents, conversations, réglages, secrets, cookies et profils navigateur. Cette action est irréversible.",
+    "external": "Les dossiers de projets et les configurations externes (Claude, Codex, etc.) situés en dehors du dossier Timon sont conservés. Les liens symboliques vers des dossiers externes ne sont pas suivis.",
+    "confirmation": "Saisissez SUPPRIMER pour autoriser l’effacement définitif.",
+    "finish": {
+      "mac": "Une fois Timon fermé et le nettoyage terminé, déplacez Timon.app dans la corbeille depuis le Finder.",
+      "windows": "Une fois le nettoyage terminé, retirez Timon depuis les paramètres Applications de Windows.",
+      "appimage": "Une fois le nettoyage terminé, supprimez le fichier AppImage.",
+      "linux": "Une fois le nettoyage terminé, retirez le paquet Timon avec le gestionnaire de logiciels de votre distribution."
+    },
+    "action": "Désinstaller Timon…",
+    "busy": "Désinstallation en cours…"
   },
-  "action": "Désinstaller Timon…",
-  "busy": "Désinstallation en cours…"
-},
   "freeLicense": {
     "restrictedAccounts": "{count} compte(s) supplémentaire(s) suspendu(s). Le premier superadmin actif conserve l’accès ; aucun compte ni aucune donnée n’a été supprimé.",
     "retainedData": "Après un retour à Free, les comptes supplémentaires restent stockés mais indisponibles. Toutes les fonctionnalités et tous les plugins restent disponibles. Une licence valide rétablit les comptes qu’elle couvre.",
@@ -3112,48 +3397,48 @@
       "undeclared": "Inutilisé : son plugin ne dit pas où part votre voix."
     },
     "errors": {
-      "modelMissing": "La dict\u00e9e locale a besoin de son mod\u00e8le vocal : t\u00e9l\u00e9chargez-le dans {settingsPath}.",
-      "microphoneDenied": "Timon n'a pas le droit d'utiliser le micro. Autorisez-le dans les r\u00e9glages de confidentialit\u00e9 du syst\u00e8me, puis r\u00e9essayez.",
-      "microphoneLost": "Le micro a \u00e9t\u00e9 d\u00e9branch\u00e9 : la dict\u00e9e s'est arr\u00eat\u00e9e.",
-      "busy": "Dict\u00e9e arr\u00eat\u00e9e : elle a \u00e9t\u00e9 lanc\u00e9e dans une autre fen\u00eatre ou un autre panneau.",
-      "engineCrashed": "Le moteur de dict\u00e9e s'est arr\u00eat\u00e9 brusquement. Cliquez sur le micro pour recommencer.",
-      "engineUnavailable": "La dict\u00e9e locale n'est pas disponible sur cet ordinateur.",
-      "initFailed": "Le moteur de dict\u00e9e n'a pas pu d\u00e9marrer. R\u00e9essayez, ou supprimez puis ret\u00e9l\u00e9chargez le mod\u00e8le vocal dans {settingsPath}.",
+      "modelMissing": "La dictée locale a besoin de son modèle vocal : téléchargez-le dans {settingsPath}.",
+      "microphoneDenied": "Timon n'a pas le droit d'utiliser le micro. Autorisez-le dans les réglages de confidentialité du système, puis réessayez.",
+      "microphoneLost": "Le micro a été débranché : la dictée s'est arrêtée.",
+      "busy": "Dictée arrêtée : elle a été lancée dans une autre fenêtre ou un autre panneau.",
+      "engineCrashed": "Le moteur de dictée s'est arrêté brusquement. Cliquez sur le micro pour recommencer.",
+      "engineUnavailable": "La dictée locale n'est pas disponible sur cet ordinateur.",
+      "initFailed": "Le moteur de dictée n'a pas pu démarrer. Réessayez, ou supprimez puis retéléchargez le modèle vocal dans {settingsPath}.",
       "engineNotAllowed": "Ce moteur de dictée n'est pas autorisé. Autorisez-le dans {settingsPath}.",
       "engineUndeclared": "Ce moteur de dictée ne dit pas où part votre voix : Timon ne l'utilise pas."
     },
     "model": {
-      "consentTitle": "Dict\u00e9e locale",
-      "consentBody": "Un mod\u00e8le vocal de {size} sera t\u00e9l\u00e9charg\u00e9 une seule fois. Votre voix reste sur votre machine.",
+      "consentTitle": "Dictée locale",
+      "consentBody": "Un modèle vocal de {size} sera téléchargé une seule fois. Votre voix reste sur votre machine.",
       "consentBodyModel": "{model}, un modèle vocal de {size}, sera téléchargé une seule fois. Votre voix reste sur votre machine.",
-      "download": "T\u00e9l\u00e9charger",
+      "download": "Télécharger",
       "cancel": "Annuler",
       "pause": "Pause",
       "resume": "Reprendre",
-      "retry": "R\u00e9essayer",
+      "retry": "Réessayer",
       "close": "Fermer",
-      "loading": "Lecture de l'\u00e9tat du moteur de dict\u00e9e\u2026",
-      "unavailable": "La dict\u00e9e locale n'est pas disponible sur cet ordinateur.",
-      "progressLabel": "T\u00e9l\u00e9chargement du mod\u00e8le vocal",
-      "downloading": "T\u00e9l\u00e9chargement\u2026 {received} sur {total}",
-      "paused": "En pause \u00e0 {received} sur {total}",
-      "verifying": "V\u00e9rification des fichiers t\u00e9l\u00e9charg\u00e9s\u2026",
-      "ready": "Mod\u00e8le vocal t\u00e9l\u00e9charg\u00e9 ({size}). Cliquez sur le micro pour dicter.",
+      "loading": "Lecture de l'état du moteur de dictée…",
+      "unavailable": "La dictée locale n'est pas disponible sur cet ordinateur.",
+      "progressLabel": "Téléchargement du modèle vocal",
+      "downloading": "Téléchargement… {received} sur {total}",
+      "paused": "En pause à {received} sur {total}",
+      "verifying": "Vérification des fichiers téléchargés…",
+      "ready": "Modèle vocal téléchargé ({size}). Cliquez sur le micro pour dicter.",
       "errors": {
-        "network": "Le t\u00e9l\u00e9chargement a \u00e9chou\u00e9 : pas de connexion. V\u00e9rifiez le r\u00e9seau et r\u00e9essayez.",
-        "http": "Le serveur de t\u00e9l\u00e9chargement a refus\u00e9 la requ\u00eate. R\u00e9essayez plus tard.",
-        "stalled": "Le t\u00e9l\u00e9chargement est bloqu\u00e9. R\u00e9essayez pour le reprendre.",
-        "integrity": "Les fichiers t\u00e9l\u00e9charg\u00e9s sont endommag\u00e9s. R\u00e9essayez pour les ret\u00e9l\u00e9charger.",
-        "diskFull": "Espace disque insuffisant : le mod\u00e8le occupe {size}. Lib\u00e9rez de la place et r\u00e9essayez.",
-        "io": "Le mod\u00e8le n'a pas pu \u00eatre \u00e9crit sur le disque. R\u00e9essayez."
+        "network": "Le téléchargement a échoué : pas de connexion. Vérifiez le réseau et réessayez.",
+        "http": "Le serveur de téléchargement a refusé la requête. Réessayez plus tard.",
+        "stalled": "Le téléchargement est bloqué. Réessayez pour le reprendre.",
+        "integrity": "Les fichiers téléchargés sont endommagés. Réessayez pour les retélécharger.",
+        "diskFull": "Espace disque insuffisant : le modèle occupe {size}. Libérez de la place et réessayez.",
+        "io": "Le modèle n'a pas pu être écrit sur le disque. Réessayez."
       }
     },
     "settings": {
-      "title": "Dict\u00e9e locale (application desktop)",
-      "description": "Dans l'application desktop, la dict\u00e9e tourne sur cet ordinateur : votre voix n'en sort jamais. Elle utilise un mod\u00e8le vocal de {size}, t\u00e9l\u00e9charg\u00e9 une seule fois.",
-      "descriptionNoSize": "Dans l'application desktop, la dict\u00e9e tourne sur cet ordinateur : votre voix n'en sort jamais. Elle utilise un mod\u00e8le vocal, t\u00e9l\u00e9charg\u00e9 une seule fois.",
-      "notDownloaded": "Le mod\u00e8le vocal n'est pas t\u00e9l\u00e9charg\u00e9.",
-      "delete": "Supprimer le mod\u00e8le vocal"
+      "title": "Dictée locale (application desktop)",
+      "description": "Dans l'application desktop, la dictée tourne sur cet ordinateur : votre voix n'en sort jamais. Elle utilise un modèle vocal de {size}, téléchargé une seule fois.",
+      "descriptionNoSize": "Dans l'application desktop, la dictée tourne sur cet ordinateur : votre voix n'en sort jamais. Elle utilise un modèle vocal, téléchargé une seule fois.",
+      "notDownloaded": "Le modèle vocal n'est pas téléchargé.",
+      "delete": "Supprimer le modèle vocal"
     },
     "voice": {
       "intro": "Dans l'application desktop, la dictée tourne sur cet ordinateur : votre voix n'en sort jamais. Les modèles vocaux sont téléchargés une seule fois et restent sur cet ordinateur.",
@@ -3249,15 +3534,15 @@
   },
   "voiceSettings": {
     "category": "Voix",
-    "title": "Dict\u00e9e vocale",
-    "graceHint": "La dict\u00e9e traverse les h\u00e9sitations : elle se termine d'elle-m\u00eame apr\u00e8s {seconds} secondes de silence, ou d\u00e8s que vous l'arr\u00eatez.",
+    "title": "Dictée vocale",
+    "graceHint": "La dictée traverse les hésitations : elle se termine d'elle-même après {seconds} secondes de silence, ou dès que vous l'arrêtez.",
     "pushToTalk": "Maintenir une touche pour parler",
-    "pushToTalkDescription": "La dict\u00e9e s'ouvre tant que la touche est maintenue et se ferme d\u00e8s qu'elle est rel\u00e2ch\u00e9e. Sans ce mode, le bouton micro fait la bascule.",
+    "pushToTalkDescription": "La dictée s'ouvre tant que la touche est maintenue et se ferme dès qu'elle est relâchée. Sans ce mode, le bouton micro fait la bascule.",
     "key": "Touche",
-    "keyDescription": "Appuyez sur la touche \u00e0 maintenir. \u00c9chap annule. Les touches qui \u00e9crivent sont refus\u00e9es \u2014 elles casseraient la saisie d'un message.",
+    "keyDescription": "Appuyez sur la touche à maintenir. Échap annule. Les touches qui écrivent sont refusées — elles casseraient la saisie d'un message.",
     "changeKey": "Changer la touche",
-    "capturing": "Appuyez sur une touche\u2026",
-    "keyRefused": "{key} ne peut pas \u00eatre utilis\u00e9e : cette touche \u00e9crit ou pilote la page."
+    "capturing": "Appuyez sur une touche…",
+    "keyRefused": "{key} ne peut pas être utilisée : cette touche écrit ou pilote la page."
   },
   "backendsSettings": {
     "thinking": {
@@ -3405,42 +3690,46 @@
       "agents": "Agents",
       "routines": "Routines",
       "tasks": "Tasks en attente"
+    },
+    "presets": {
+      "omlx": "oMLX (local)",
+      "deepseek": "DeepSeek API (web)"
     }
   },
   "gptLiveSettings": {
     "title": "Conversation GPT-Live",
-    "description": "Parlez \u00e0 une mission \u00e0 voix haute, avec des tours de parole naturels et la possibilit\u00e9 de couper. OpenAI GPT-Live porte la voix ; l'agent de la mission fait toujours le travail et \u00e9crit sa r\u00e9ponse dans le chat.",
+    "description": "Parlez à une mission à voix haute, avec des tours de parole naturels et la possibilité de couper. OpenAI GPT-Live porte la voix ; l'agent de la mission fait toujours le travail et écrit sa réponse dans le chat.",
     "enable": "Activer le mode conversation",
-    "enableDescription": "Ajoute un bouton conversation \u00e0 c\u00f4t\u00e9 du micro dans le chat. OpenAI facture le temps de voix sur votre cl\u00e9, environ 0,05 $ la minute.",
-    "key": "Cl\u00e9 API OpenAI",
-    "keyPresent": "enregistr\u00e9e dans le coffre",
+    "enableDescription": "Ajoute un bouton conversation à côté du micro dans le chat. OpenAI facture le temps de voix sur votre clé, environ 0,05 $ la minute.",
+    "key": "Clé API OpenAI",
+    "keyPresent": "enregistrée dans le coffre",
     "keyMissing": "absente",
-    "keyDescription": "Conserv\u00e9e dans le coffre de secrets sous {name}, lisible par le daemon seul : aucun agent ne la re\u00e7oit. Elle n'est plus jamais affich\u00e9e une fois enregistr\u00e9e.",
-    "keyReplacePlaceholder": "Nouvelle cl\u00e9 pour remplacer celle enregistr\u00e9e",
+    "keyDescription": "Conservée dans le coffre de secrets sous {name}, lisible par le daemon seul : aucun agent ne la reçoit. Elle n'est plus jamais affichée une fois enregistrée.",
+    "keyReplacePlaceholder": "Nouvelle clé pour remplacer celle enregistrée",
     "saveKey": "Enregistrer dans le coffre",
     "replaceKey": "Remplacer",
-    "keySaved": "Cl\u00e9 enregistr\u00e9e dans le coffre.",
-    "keyFailed": "La cl\u00e9 n'a pas pu \u00eatre enregistr\u00e9e.",
-    "keyForbidden": "Votre compte ne peut pas \u00e9crire dans le coffre de secrets.",
-    "toggleFailed": "Le r\u00e9glage n'a pas pu \u00eatre modifi\u00e9.",
-    "needsKey": "Le mode conversation reste masqu\u00e9 tant qu'aucune cl\u00e9 n'est enregistr\u00e9e."
+    "keySaved": "Clé enregistrée dans le coffre.",
+    "keyFailed": "La clé n'a pas pu être enregistrée.",
+    "keyForbidden": "Votre compte ne peut pas écrire dans le coffre de secrets.",
+    "toggleFailed": "Le réglage n'a pas pu être modifié.",
+    "needsKey": "Le mode conversation reste masqué tant qu'aucune clé n'est enregistrée."
   },
   "gptLive": {
-    "start": "D\u00e9marrer une conversation vocale (GPT-Live)",
+    "start": "Démarrer une conversation vocale (GPT-Live)",
     "stop": "Terminer la conversation vocale",
-    "connecting": "Connexion de la conversation vocale\u2026",
+    "connecting": "Connexion de la conversation vocale…",
     "live": "Conversation vocale en cours",
-    "errorDisabled": "GPT-Live est d\u00e9sactiv\u00e9 dans {settingsPath}.",
-    "errorNoKey": "Aucune cl\u00e9 API GPT-Live dans le coffre : ajoutez-en une dans {settingsPath}.",
-    "errorBadKey": "OpenAI a refus\u00e9 la cl\u00e9 API GPT-Live.",
-    "errorRateLimited": "OpenAI limite les sessions GPT-Live en ce moment. R\u00e9essayez dans un instant.",
-    "errorMic": "L'acc\u00e8s au micro a \u00e9t\u00e9 refus\u00e9.",
-    "errorGeneric": "La conversation vocale n'a pas pu d\u00e9marrer : {detail}",
-    "errorDropped": "La conversation vocale a \u00e9t\u00e9 interrompue.",
-    "closing": "Fin de la conversation vocale\u2026",
+    "errorDisabled": "GPT-Live est désactivé dans {settingsPath}.",
+    "errorNoKey": "Aucune clé API GPT-Live dans le coffre : ajoutez-en une dans {settingsPath}.",
+    "errorBadKey": "OpenAI a refusé la clé API GPT-Live.",
+    "errorRateLimited": "OpenAI limite les sessions GPT-Live en ce moment. Réessayez dans un instant.",
+    "errorMic": "L'accès au micro a été refusé.",
+    "errorGeneric": "La conversation vocale n'a pas pu démarrer : {detail}",
+    "errorDropped": "La conversation vocale a été interrompue.",
+    "closing": "Fin de la conversation vocale…",
     "voiceTag": "voix",
     "voiceUserHint": "Dit pendant une conversation GPT-Live (transcription)",
-    "voiceAgentHint": "Dit \u00e0 voix haute par GPT-Live"
+    "voiceAgentHint": "Dit à voix haute par GPT-Live"
   },
   "routinesPage": {
     "edit": "Modifier la routine",

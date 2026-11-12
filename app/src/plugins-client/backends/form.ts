@@ -139,6 +139,62 @@ export function blankForm(): BackendForm {
   return { id: null, name: '', baseUrl: '', key: '', protocol: 'anthropic', models: [], defaultModel: null, icon: null, brand: null };
 }
 
+/** A ready-made provider: the form opens prefilled, the user completes and saves it. */
+export type BackendPreset = {
+  id: string;
+  /** Written as the provider's name. */
+  name: string;
+  /** i18n key of the preset button. */
+  labelKey: string;
+  protocol: BackendProtocol;
+  baseUrl: string;
+  models: readonly { slug: string; label: string }[];
+  brand: string | null;
+};
+
+/**
+ * The two providers most local installs want, in one click:
+ *  - oMLX, an OpenAI-shaped MLX server on Apple Silicon (serves `/v1/responses`);
+ *  - the DeepSeek hosted API, through its Anthropic-compatible endpoint.
+ * Base URLs stay editable: a non-default port or proxy is common.
+ */
+export const BACKEND_PRESETS: readonly BackendPreset[] = Object.freeze([
+  {
+    id: 'omlx',
+    name: 'oMLX',
+    labelKey: 'backendsSettings.presets.omlx',
+    protocol: 'openai-responses',
+    baseUrl: 'http://127.0.0.1:8000/v1',
+    models: [],
+    brand: null,
+  },
+  {
+    id: 'deepseek',
+    name: 'DeepSeek API',
+    labelKey: 'backendsSettings.presets.deepseek',
+    protocol: 'anthropic',
+    baseUrl: 'https://api.deepseek.com/anthropic',
+    models: [
+      { slug: 'deepseek-chat', label: 'DeepSeek Chat' },
+      { slug: 'deepseek-reasoner', label: 'DeepSeek Reasoner' },
+    ],
+    brand: 'deepseek',
+  },
+]);
+
+/** The form of a preset: same fields as "Add", filled in. */
+export function presetForm(preset: BackendPreset): BackendForm {
+  return {
+    ...blankForm(),
+    name: preset.name,
+    baseUrl: preset.baseUrl,
+    protocol: preset.protocol,
+    models: preset.models.map((model) => ({ slug: model.slug, label: model.label })),
+    defaultModel: preset.models[0]?.slug ?? null,
+    brand: preset.brand,
+  };
+}
+
 /** Reopens a saved backend for editing. The key is left empty on purpose: we
  *  never receive it back, and an empty field means "leave it alone". */
 export function formOf(backend: CustomBackend): BackendForm {

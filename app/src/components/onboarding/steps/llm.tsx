@@ -11,7 +11,7 @@
  * by default and turned off in Settings › Privacy.
  */
 import { useCallback, useEffect, useState, type ReactElement } from 'react';
-import { ArrowRight, Check, ChevronRight, ExternalLink } from 'lucide-react';
+import { ArrowRight, Check, ChevronRight, Cpu, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BrandMark } from '@/components/brand-mark';
 import { AgentMascotHost } from '@/components/mascot/agent-mascot';
@@ -80,7 +80,9 @@ export function LlmStep(): ReactElement {
           ? <PlanBlock onContinue={next} />
           : shown === 'local'
             ? <LocalBlock onContinue={next} />
-            : <ChooseBlock onPick={setView} known={known} />)}
+            : shown === 'web'
+              ? <WebBlock onContinue={next} />
+              : <ChooseBlock onPick={setView} known={known} />)}
       />
     </section>
   );
@@ -108,6 +110,12 @@ function ChooseBlock({ onPick, known }: { onPick: (view: LlmView) => void; known
           detail={t('onboarding.llm.local.detail')}
           onClick={() => onPick('local')}
           name="local"
+        />
+        <ChoiceRow
+          title={t('onboarding.llm.web.title')}
+          detail={t('onboarding.llm.web.detail')}
+          onClick={() => onPick('web')}
+          name="web"
         />
       </div>
       <p className="mt-4 max-w-[420px] text-xs leading-relaxed text-muted-foreground" data-legal>
@@ -213,9 +221,43 @@ function LocalBlock({ onContinue }: { onContinue: () => void }): ReactElement {
             {t('providerClis.install')}<ExternalLink className="size-3" aria-hidden />
           </a>
         </div>
+        <div className="mt-0.5 flex items-center gap-3 rounded-xl p-2.5" data-omlx>
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-[10px] bg-muted">
+            <Cpu className="size-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold">oMLX</p>
+            <p className="text-xs text-muted-foreground">{t('onboarding.llm.local.omlx')}</p>
+          </div>
+        </div>
       </div>
       <p className="mt-3 max-w-[460px] text-xs leading-relaxed text-muted-foreground">
         {t('onboarding.llm.local.connect', { settingsPath: settingsPath('models', 'backends') })}
+      </p>
+      <Button type="button" className="mt-5 shrink-0 gap-2" onClick={onContinue} data-continue>
+        {t('onboarding.continue')}<ArrowRight className="size-4" aria-hidden />
+      </Button>
+    </>
+  );
+}
+
+function WebBlock({ onContinue }: { onContinue: () => void }): ReactElement {
+  return (
+    <>
+      <p className="mb-2.5 max-w-[460px] text-[13px] text-muted-foreground">{t('onboarding.llm.web.hint')}</p>
+      <div className="w-full max-w-[460px] rounded-2xl bg-card p-1.5 text-left shadow-elev-2" data-deepseek>
+        <div className="flex items-center gap-3 rounded-xl p-2.5">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-[10px] bg-muted">
+            <BrandMark brand="deepseek" className="size-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold">DeepSeek API</p>
+            <p className="text-xs text-muted-foreground">{t('onboarding.llm.web.deepseek')}</p>
+          </div>
+        </div>
+      </div>
+      <p className="mt-3 max-w-[460px] text-xs leading-relaxed text-muted-foreground">
+        {t('onboarding.llm.web.connect', { settingsPath: settingsPath('models', 'backends') })}
       </p>
       <Button type="button" className="mt-5 shrink-0 gap-2" onClick={onContinue} data-continue>
         {t('onboarding.continue')}<ArrowRight className="size-4" aria-hidden />

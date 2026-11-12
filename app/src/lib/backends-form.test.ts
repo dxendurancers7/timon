@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { blankForm, createPayload, destinationHost, effectiveReasoning, formErrorKey, formOf, mergeDiscovered, modelsErrorKey, outcomeMessage, parseLevels, testPayload, thinkingChoiceOf, updatePayload, withThinkingChoice } from '@/plugins-client/backends/form';
+import { blankForm, BACKEND_PRESETS, createPayload, destinationHost, effectiveReasoning, formErrorKey, formOf, mergeDiscovered, modelsErrorKey, outcomeMessage, parseLevels, presetForm, testPayload, thinkingChoiceOf, updatePayload, withThinkingChoice } from '@/plugins-client/backends/form';
 import type { CustomBackend } from '@/plugins-client/backends/form';
 
 const filled = { ...blankForm(), name: ' DeepSeek ', baseUrl: ' https://api.deepseek.com/anthropic ', key: ' sk-x ' };
@@ -140,4 +140,19 @@ test('the levels a Test reported travel with the models and count as detected un
   assert.deepEqual(effectiveReasoning(withThinkingChoice(merged[0]!, 'none')), { source: 'declared', thinks: false, controls: [] });
   const sent = createPayload({ ...blankForm(), name: 'X', baseUrl: 'https://x.example', models: merged }).models as Record<string, unknown>[];
   assert.deepEqual(sent[0]!.reportedReasoningLevels, ['low', 'max']);
+});
+
+test('the oMLX and DeepSeek presets prefill the protocol and endpoint', () => {
+  const omlx = presetForm(BACKEND_PRESETS.find((preset) => preset.id === 'omlx')!);
+  assert.equal(omlx.id, null);
+  assert.equal(omlx.protocol, 'openai-responses');
+  assert.equal(omlx.baseUrl, 'http://127.0.0.1:8000/v1');
+  assert.equal(formErrorKey(omlx), null);
+
+  const deepseek = presetForm(BACKEND_PRESETS.find((preset) => preset.id === 'deepseek')!);
+  assert.equal(deepseek.protocol, 'anthropic');
+  assert.equal(deepseek.baseUrl, 'https://api.deepseek.com/anthropic');
+  assert.deepEqual(deepseek.models.map((model) => model.slug), ['deepseek-chat', 'deepseek-reasoner']);
+  assert.equal(deepseek.defaultModel, 'deepseek-chat');
+  assert.equal(formErrorKey(deepseek), null);
 });

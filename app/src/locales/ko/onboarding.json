@@ -17,7 +17,19 @@
     },
     "llm": {
       "title": "LLM을\n선택하세요.",
-      "subtitle": "Timon은 이미 가진 AI 구독으로 작동합니다. 토큰당 요금은 없습니다."
+      "subtitle": "Timon은 이미 가진 AI 구독으로 작동합니다. 토큰당 요금은 없습니다.",
+      "local": {
+        "detail": "Ollama or oMLX, no subscription, nothing leaves your machine",
+        "omlx": "Runs MLX models on Apple Silicon through an OpenAI-compatible server.",
+        "connect": "Once Ollama or oMLX runs, add it as a provider in {settingsPath}."
+      },
+      "web": {
+        "title": "Use a web API",
+        "detail": "DeepSeek API, with a key you paste",
+        "hint": "Hosted models, billed per token by the provider.",
+        "deepseek": "DeepSeek's hosted API (deepseek-chat, deepseek-reasoner).",
+        "connect": "Add it in {settingsPath}: pick the DeepSeek API preset, then paste your key."
+      }
     },
     "profile": {
       "title": "어떤 일로 오셨나요?",

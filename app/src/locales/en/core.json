@@ -1,17 +1,238 @@
 {
-  "brandLogo": {"menu": "Logo", "productLogo": "Show the product logo (screenshots)", "devLogo": "Show the development logo"},
-  "apps": {"title": "Official connectors", "subtitle": "The MCP servers of the services your agents work with, connected in one click.", "count": "{connected} connected · {total} connectors", "loadFailed": "The connectors could not be loaded. Check that Timon is running, then reload the page.", "noMatch": "No connector matches this search.", "footer": "Each connector is a remote MCP server hosted by its publisher, which receives what your agents send it. Connecting it does not give it to an agent yet: add it from the agent's MCP servers. Agents on a backend that only loads local MCP servers skip remote connectors.", "category": {"code": "Code", "data": "Data", "design": "Design", "productivity": "Productivity", "business": "Payments"}, "status": {"connected": "Connected", "blocked": "Name taken"}, "action": {"connect": "Connect", "finishSignIn": "Finish sign-in", "disconnect": "Disconnect", "close": "Close"}, "card": {"open": "Open {name}"}, "details": {"status": {"available": "Not connected", "connecting": "Connecting…", "consent": "Waiting for your sign-in", "connected": "Connected", "blocked": "An MCP server with the same name exists"}, "examples": "What you can ask", "keyKept": "The key is kept in Timon's secrets vault and only sent to this connector.", "vaultOff": "The secrets vault is switched off: this connector cannot be connected.", "getKey": "Get a key", "consentPending": "Sign in on the page that opened, then come back here.", "openConsent": "Open the sign-in page again", "attachHint": "Connected as the MCP server {id}: add it to an agent from its MCP servers.", "blockedHint": "An MCP server named {id} was added by hand. Rename or delete it in Your MCP servers to use this connector.", "remoteOnly": "Agents on a backend that only loads local MCP servers do not receive this connector.", "website": "Website", "privacy": "Privacy policy", "terms": "Terms of use", "endpoint": "MCP endpoint:", "connection": "Connection", "info": "Information", "developer": "Developer", "category": "Category", "signInWith": "Sign in with your {name} account in the browser.", "noAccount": "No account needed.", "read": "Read"}, "confirm": {"disconnect": "Disconnect {name}?", "disconnectDetail": "Its MCP server is removed, with its key if it has one. Agents that used it lose its tools at their next start."}, "toast": {"connected": "{name} connected", "consentOpened": "{name}: finish signing in on the page that opened.", "authorized": "Connector authorized", "oauthFailed": "Sign-in failed: {error}", "connectFailed": "Could not connect {name}: {error}", "disconnected": "{name} disconnected", "disconnectFailed": "Could not disconnect {name}: {error}"}},
-  "pageToc": {"title": "On this page", "label": "Sections of this page"},
-  "mcpTab": {"yourServers": "Your MCP servers"},
-  "mcpTab": {"yourServers": "Your MCP servers"},
-  "roles": {"modified": "Modified", "reset": "Reset prompt", "resetConfirm": "Restore the shipped prompt for \"{id}\"? This also discards unsaved edits.", "resetDone": "Prompt for \"{id}\" reset", "builtinPromptHint": "This prompt applies to all agents using this role. Only the prompt can be changed."},
-  "chatEntry": { "unavailable": "Unable to find the main agent. Check your agents or try again.", "retry": "Retry", "openMain": "Chat with main agent", "manageAgents": "Open agents", "unreadable": "The agent list could not be read ({status}).", "unreadableNoStatus": "The agent list could not be read (daemon unreachable).", "undesignated": "No agent is designated as the main agent. Choose one:", "makeMain": "Make {name} the main agent", "makeMainFailed": "Could not designate {name}: {error}", "none": "This install has no cross-project orchestrator. Create one or give the orchestrator role to an agent without a project." },
-  "skillForm": {"unauthorized": "Sign in again to save this skill.", "forbidden": "Your account cannot manage skills.", "failed": "Unable to save the skill. Check the ID and instructions, then try again.", "network": "Cannot reach Timon. Check your connection and try again.", "idLabel": "Skill ID", "idError": "Enter an ID using lowercase letters, digits, '.', '_' or '-'. It cannot be '.' or '..'.", "contentError": "Enter instructions before saving the skill."},
-  "dateTimePicker": {"clear": "Clear the date", "time": "Time", "done": "Done"},
-  "skillIsland": {"notFound": "Skill /{id} not found.", "loadFailed": "Unable to load the skill.", "saved": "Saved /{id}", "pathCopied": "Path copied", "copyFailed": "Unable to copy the path.", "copyPath": "Copy the path", "delete": "Delete the skill", "deleteConfirm": "Delete /{id}?\n{path}", "deleted": "Deleted /{id}", "deleteFailed": "Unable to delete the skill.", "command": "command", "skill": "skill", "readOnly": "read-only", "storedAt": "Stored at {path}"},
-  "skillAttach": {"title": "Who receives this skill", "hint": "The narrowest attachment decides: an agent's own wins over its role, its role over its project, its project over every agent. A change takes effect the next time the agents it reaches start.", "needsManage": "Changing who receives this skill needs the agents:manage permission. Ask an administrator.", "needsPrivileged": "Attaching this skill to every agent, a project or a role needs the agents:privileged-config permission. Ask an administrator. You can still attach it to one agent.", "loading": "Loading…", "loadFailed": "Unable to read who receives this skill.", "empty": "No agent receives this skill yet.", "everyAgent": "All agents", "scope": {"global": "Every agent", "project": "Project", "role": "Agent role", "agent": "Agent"}, "kind": {"include": "In the catalogue", "import": "Imported whole", "exclude": "Excluded"}, "kindOf": "Mode for {target}", "remove": "Remove the attachment of {target}", "scopeLabel": "Scope", "targetLabel": "Target", "kindLabel": "Mode", "targetPlaceholder": "Choose…", "noTarget": "Nothing left to choose", "globalTaken": "Already attached to every agent: change its mode in the list.", "add": "Attach", "adding": "Saving…", "saved": "/{id} attached. Takes effect the next time the agents start.", "removed": "Attachment of /{id} removed. Takes effect the next time the agents start.", "error": {"unauthorized": "Sign in again to change who receives this skill.", "forbidden": "Your account cannot change this attachment.", "forbiddenReason": "Refused: {reason}", "notFound": {"project": "The project “{target}” does not exist. The list was refreshed: pick another one.", "role": "The agent role “{target}” does not exist. The list was refreshed: pick another one.", "agent": "The agent “{target}” does not exist. The list was refreshed: pick another one.", "skill": "This skill no longer exists.", "attachment": "This attachment no longer exists. The list was refreshed.", "unknown": "Not found."}, "invalid": "This attachment is not valid.", "failed": "Unable to save the attachment. Try again.", "network": "Cannot reach {brand}. Check your connection and try again."}},
-  "skillMission": {"unavailable": "Not available in missions", "unavailableHint": "Missions do not load ~/.claude. Import this skill into {brand} to attach it to an agent.", "notAttachable": "Not available in missions: import it into {brand} from the Skills page to attach it", "import": "Import into {brand}", "importTitle": "Import /{id} into {brand}", "importHint": "Copies the skill's folder to {path}. The copy is a {brand} skill you can attach to an agent; the original stays where it is.", "importPluginHint": "Only this skill is copied, never the plugin's hooks or MCP servers.", "idLabel": "ID of the copy", "importing": "Importing…", "imported": "Imported as /{id}", "cancel": "Cancel", "idError": "Enter an ID using lowercase letters, digits, '.', '_' or '-', starting with a letter or a digit.", "exists": "A {brand} skill with this ID already exists. Pick another ID.", "needsPrivileged": "This skill pre-authorises tools: importing it needs the agents:privileged-config permission.", "forbidden": "Your account cannot manage skills.", "unauthorized": "Sign in again to import this skill.", "tooLarge": "This skill's folder is too large to import.", "notFound": "This skill no longer exists.", "failed": "Unable to import the skill.", "network": "Cannot reach {brand}. Check your connection and try again."},
-  "skillsPage": {"source": {"claude-user": "global", "project": "project", "plugin": "plugin"}, "sectionTimon": "{brand} skills", "sectionTimonHint": "~/.timon/skills — attachable to an agent, in its catalogue or imported whole", "sectionUser": "Global Claude skills", "sectionUserHint": "~/.claude/skills & ~/.claude/commands — not loaded by missions, import one into {brand} to attach it", "sectionProject": "Project skills", "sectionProjectHint": "<project>/.claude — loaded natively only by a Claude Code agent working in this project", "sectionPlugin": "Plugins", "sectionPluginHint": "provided by installed plugins — read-only, not loaded by missions", "search": "Search by id, title or description…", "count": "{count} skills available", "newSkill": "New {brand} skill", "empty": "No skills yet. Create one with “New {brand} skill”: it is stored at {path}.", "shadowed": "shadowed", "readOnly": "Read-only", "createTitle": "New {brand} skill", "createHint": "Stored at {path}. It opens in the editor once created.", "create": "Create", "cancel": "Cancel", "creating": "Creating…", "exists": "A {brand} skill with this ID already exists.", "noWorkspace": "Open a page that has a workspace to show this skill.", "template": "# {id}\n\nWrite the instructions the agent must follow when this skill is active.\n", "title": "Skills catalog", "lead": "Reusable instruction files. Attach them to an agent from", "leadLink": "Edit Agent Config"},
+  "brandLogo": {
+    "menu": "Logo",
+    "productLogo": "Show the product logo (screenshots)",
+    "devLogo": "Show the development logo"
+  },
+  "apps": {
+    "title": "Official connectors",
+    "subtitle": "The MCP servers of the services your agents work with, connected in one click.",
+    "count": "{connected} connected · {total} connectors",
+    "loadFailed": "The connectors could not be loaded. Check that Timon is running, then reload the page.",
+    "noMatch": "No connector matches this search.",
+    "footer": "Each connector is a remote MCP server hosted by its publisher, which receives what your agents send it. Connecting it does not give it to an agent yet: add it from the agent's MCP servers. Agents on a backend that only loads local MCP servers skip remote connectors.",
+    "category": {
+      "code": "Code",
+      "data": "Data",
+      "design": "Design",
+      "productivity": "Productivity",
+      "business": "Payments"
+    },
+    "status": {
+      "connected": "Connected",
+      "blocked": "Name taken"
+    },
+    "action": {
+      "connect": "Connect",
+      "finishSignIn": "Finish sign-in",
+      "disconnect": "Disconnect",
+      "close": "Close"
+    },
+    "card": {
+      "open": "Open {name}"
+    },
+    "details": {
+      "status": {
+        "available": "Not connected",
+        "connecting": "Connecting…",
+        "consent": "Waiting for your sign-in",
+        "connected": "Connected",
+        "blocked": "An MCP server with the same name exists"
+      },
+      "examples": "What you can ask",
+      "keyKept": "The key is kept in Timon's secrets vault and only sent to this connector.",
+      "vaultOff": "The secrets vault is switched off: this connector cannot be connected.",
+      "getKey": "Get a key",
+      "consentPending": "Sign in on the page that opened, then come back here.",
+      "openConsent": "Open the sign-in page again",
+      "attachHint": "Connected as the MCP server {id}: add it to an agent from its MCP servers.",
+      "blockedHint": "An MCP server named {id} was added by hand. Rename or delete it in Your MCP servers to use this connector.",
+      "remoteOnly": "Agents on a backend that only loads local MCP servers do not receive this connector.",
+      "website": "Website",
+      "privacy": "Privacy policy",
+      "terms": "Terms of use",
+      "endpoint": "MCP endpoint:",
+      "connection": "Connection",
+      "info": "Information",
+      "developer": "Developer",
+      "category": "Category",
+      "signInWith": "Sign in with your {name} account in the browser.",
+      "noAccount": "No account needed.",
+      "read": "Read"
+    },
+    "confirm": {
+      "disconnect": "Disconnect {name}?",
+      "disconnectDetail": "Its MCP server is removed, with its key if it has one. Agents that used it lose its tools at their next start."
+    },
+    "toast": {
+      "connected": "{name} connected",
+      "consentOpened": "{name}: finish signing in on the page that opened.",
+      "authorized": "Connector authorized",
+      "oauthFailed": "Sign-in failed: {error}",
+      "connectFailed": "Could not connect {name}: {error}",
+      "disconnected": "{name} disconnected",
+      "disconnectFailed": "Could not disconnect {name}: {error}"
+    }
+  },
+  "pageToc": {
+    "title": "On this page",
+    "label": "Sections of this page"
+  },
+  "mcpTab": {
+    "yourServers": "Your MCP servers"
+  },
+  "roles": {
+    "modified": "Modified",
+    "reset": "Reset prompt",
+    "resetConfirm": "Restore the shipped prompt for \"{id}\"? This also discards unsaved edits.",
+    "resetDone": "Prompt for \"{id}\" reset",
+    "builtinPromptHint": "This prompt applies to all agents using this role. Only the prompt can be changed."
+  },
+  "chatEntry": {
+    "unavailable": "Unable to find the main agent. Check your agents or try again.",
+    "retry": "Retry",
+    "openMain": "Chat with main agent",
+    "manageAgents": "Open agents",
+    "unreadable": "The agent list could not be read ({status}).",
+    "unreadableNoStatus": "The agent list could not be read (daemon unreachable).",
+    "undesignated": "No agent is designated as the main agent. Choose one:",
+    "makeMain": "Make {name} the main agent",
+    "makeMainFailed": "Could not designate {name}: {error}",
+    "none": "This install has no cross-project orchestrator. Create one or give the orchestrator role to an agent without a project."
+  },
+  "skillForm": {
+    "unauthorized": "Sign in again to save this skill.",
+    "forbidden": "Your account cannot manage skills.",
+    "failed": "Unable to save the skill. Check the ID and instructions, then try again.",
+    "network": "Cannot reach Timon. Check your connection and try again.",
+    "idLabel": "Skill ID",
+    "idError": "Enter an ID using lowercase letters, digits, '.', '_' or '-'. It cannot be '.' or '..'.",
+    "contentError": "Enter instructions before saving the skill."
+  },
+  "dateTimePicker": {
+    "clear": "Clear the date",
+    "time": "Time",
+    "done": "Done"
+  },
+  "skillIsland": {
+    "notFound": "Skill /{id} not found.",
+    "loadFailed": "Unable to load the skill.",
+    "saved": "Saved /{id}",
+    "pathCopied": "Path copied",
+    "copyFailed": "Unable to copy the path.",
+    "copyPath": "Copy the path",
+    "delete": "Delete the skill",
+    "deleteConfirm": "Delete /{id}?\n{path}",
+    "deleted": "Deleted /{id}",
+    "deleteFailed": "Unable to delete the skill.",
+    "command": "command",
+    "skill": "skill",
+    "readOnly": "read-only",
+    "storedAt": "Stored at {path}"
+  },
+  "skillAttach": {
+    "title": "Who receives this skill",
+    "hint": "The narrowest attachment decides: an agent's own wins over its role, its role over its project, its project over every agent. A change takes effect the next time the agents it reaches start.",
+    "needsManage": "Changing who receives this skill needs the agents:manage permission. Ask an administrator.",
+    "needsPrivileged": "Attaching this skill to every agent, a project or a role needs the agents:privileged-config permission. Ask an administrator. You can still attach it to one agent.",
+    "loading": "Loading…",
+    "loadFailed": "Unable to read who receives this skill.",
+    "empty": "No agent receives this skill yet.",
+    "everyAgent": "All agents",
+    "scope": {
+      "global": "Every agent",
+      "project": "Project",
+      "role": "Agent role",
+      "agent": "Agent"
+    },
+    "kind": {
+      "include": "In the catalogue",
+      "import": "Imported whole",
+      "exclude": "Excluded"
+    },
+    "kindOf": "Mode for {target}",
+    "remove": "Remove the attachment of {target}",
+    "scopeLabel": "Scope",
+    "targetLabel": "Target",
+    "kindLabel": "Mode",
+    "targetPlaceholder": "Choose…",
+    "noTarget": "Nothing left to choose",
+    "globalTaken": "Already attached to every agent: change its mode in the list.",
+    "add": "Attach",
+    "adding": "Saving…",
+    "saved": "/{id} attached. Takes effect the next time the agents start.",
+    "removed": "Attachment of /{id} removed. Takes effect the next time the agents start.",
+    "error": {
+      "unauthorized": "Sign in again to change who receives this skill.",
+      "forbidden": "Your account cannot change this attachment.",
+      "forbiddenReason": "Refused: {reason}",
+      "notFound": {
+        "project": "The project “{target}” does not exist. The list was refreshed: pick another one.",
+        "role": "The agent role “{target}” does not exist. The list was refreshed: pick another one.",
+        "agent": "The agent “{target}” does not exist. The list was refreshed: pick another one.",
+        "skill": "This skill no longer exists.",
+        "attachment": "This attachment no longer exists. The list was refreshed.",
+        "unknown": "Not found."
+      },
+      "invalid": "This attachment is not valid.",
+      "failed": "Unable to save the attachment. Try again.",
+      "network": "Cannot reach {brand}. Check your connection and try again."
+    }
+  },
+  "skillMission": {
+    "unavailable": "Not available in missions",
+    "unavailableHint": "Missions do not load ~/.claude. Import this skill into {brand} to attach it to an agent.",
+    "notAttachable": "Not available in missions: import it into {brand} from the Skills page to attach it",
+    "import": "Import into {brand}",
+    "importTitle": "Import /{id} into {brand}",
+    "importHint": "Copies the skill's folder to {path}. The copy is a {brand} skill you can attach to an agent; the original stays where it is.",
+    "importPluginHint": "Only this skill is copied, never the plugin's hooks or MCP servers.",
+    "idLabel": "ID of the copy",
+    "importing": "Importing…",
+    "imported": "Imported as /{id}",
+    "cancel": "Cancel",
+    "idError": "Enter an ID using lowercase letters, digits, '.', '_' or '-', starting with a letter or a digit.",
+    "exists": "A {brand} skill with this ID already exists. Pick another ID.",
+    "needsPrivileged": "This skill pre-authorises tools: importing it needs the agents:privileged-config permission.",
+    "forbidden": "Your account cannot manage skills.",
+    "unauthorized": "Sign in again to import this skill.",
+    "tooLarge": "This skill's folder is too large to import.",
+    "notFound": "This skill no longer exists.",
+    "failed": "Unable to import the skill.",
+    "network": "Cannot reach {brand}. Check your connection and try again."
+  },
+  "skillsPage": {
+    "source": {
+      "claude-user": "global",
+      "project": "project",
+      "plugin": "plugin"
+    },
+    "sectionTimon": "{brand} skills",
+    "sectionTimonHint": "~/.timon/skills — attachable to an agent, in its catalogue or imported whole",
+    "sectionUser": "Global Claude skills",
+    "sectionUserHint": "~/.claude/skills & ~/.claude/commands — not loaded by missions, import one into {brand} to attach it",
+    "sectionProject": "Project skills",
+    "sectionProjectHint": "<project>/.claude — loaded natively only by a Claude Code agent working in this project",
+    "sectionPlugin": "Plugins",
+    "sectionPluginHint": "provided by installed plugins — read-only, not loaded by missions",
+    "search": "Search by id, title or description…",
+    "count": "{count} skills available",
+    "newSkill": "New {brand} skill",
+    "empty": "No skills yet. Create one with “New {brand} skill”: it is stored at {path}.",
+    "shadowed": "shadowed",
+    "readOnly": "Read-only",
+    "createTitle": "New {brand} skill",
+    "createHint": "Stored at {path}. It opens in the editor once created.",
+    "create": "Create",
+    "cancel": "Cancel",
+    "creating": "Creating…",
+    "exists": "A {brand} skill with this ID already exists.",
+    "noWorkspace": "Open a page that has a workspace to show this skill.",
+    "template": "# {id}\n\nWrite the instructions the agent must follow when this skill is active.\n",
+    "title": "Skills catalog",
+    "lead": "Reusable instruction files. Attach them to an agent from",
+    "leadLink": "Edit Agent Config"
+  },
   "kanbanDelete": {
     "confirm": "Delete this task? This cannot be undone.",
     "success": "Task deleted.",
@@ -32,8 +253,15 @@
     "failed": "Unable to delete the task. Please try again.",
     "network": "Cannot reach Timon. Check your connection and try again."
   },
-  "starterWidgets": {"loading": "Loading...", "failed": "Unable to load.", "projectsEmpty": "No projects yet. Create a project.", "missionsEmpty": "No missions yet."},
-  "projectsRoute": {"unavailable": "The Projects module is off: its grid is not mounted."},
+  "starterWidgets": {
+    "loading": "Loading...",
+    "failed": "Unable to load.",
+    "projectsEmpty": "No projects yet. Create a project.",
+    "missionsEmpty": "No missions yet."
+  },
+  "projectsRoute": {
+    "unavailable": "The Projects module is off: its grid is not mounted."
+  },
   "vaultNotConfigured": "Choose your vault in Settings to display your notes.",
   "bots": {
     "back": "Back",
@@ -57,7 +285,7 @@
     "save": "Save",
     "teamCreated": "Team created",
     "teamRenamed": "Team saved",
-    "teamDeleted": "Team \u201c{team}\u201d deleted \u2014 its TIMs kept, now without a team",
+    "teamDeleted": "Team “{team}” deleted — its TIMs kept, now without a team",
     "teamsExplain": "TIMs of the same team may talk to each other; TIMs of different teams may not.",
     "moveToTeam": "Move to a team",
     "leaveTeam": "Leave its team",
@@ -124,7 +352,6 @@
     "skills": "Skills",
     "mcp": "MCP",
     "connectors": "Connectors",
-    "connectors": "Connectors",
     "secrets": "Secrets",
     "mainNav": "Main navigation",
     "collapseNav": "Collapse nav",
@@ -153,7 +380,20 @@
       "cancelled": "Moving {page} was cancelled."
     }
   },
-  "workflows": {"agent": "Pilot agent", "agentHint": "An existing agent: it answers in the canvas chat and is woken for every run.", "agentRequired": "Choose the agent that pilots this workflow.", "noAgent": "No agent assigned", "agentSaveError": "Could not change the agent.", "runNeedsAgent": "Assign a pilot agent in Settings before running.", "runNeedsPublish": "Publish the workflow to run a version.", "issuesTitle": "The workflow cannot run yet.", "issuesHint": "Fix the nodes below, then publish or run again.", "triggerNativeHint": "This node is a native trigger: its journal, rate limit and filter live on the Triggers page.", "regenerateSecret": "Regenerate the signing secret", "secretShownOnce": "Signing secret, shown once: give it to the sender.", "secretError": "Could not regenerate the secret.", 
+  "workflows": {
+    "agent": "Pilot agent",
+    "agentHint": "An existing agent: it answers in the canvas chat and is woken for every run.",
+    "agentRequired": "Choose the agent that pilots this workflow.",
+    "noAgent": "No agent assigned",
+    "agentSaveError": "Could not change the agent.",
+    "runNeedsAgent": "Assign a pilot agent in Settings before running.",
+    "runNeedsPublish": "Publish the workflow to run a version.",
+    "issuesTitle": "The workflow cannot run yet.",
+    "issuesHint": "Fix the nodes below, then publish or run again.",
+    "triggerNativeHint": "This node is a native trigger: its journal, rate limit and filter live on the Triggers page.",
+    "regenerateSecret": "Regenerate the signing secret",
+    "secretShownOnce": "Signing secret, shown once: give it to the sender.",
+    "secretError": "Could not regenerate the secret.",
     "title": "Workflows",
     "description": "Build, run and inspect autonomous agent flows.",
     "new": "New workflow",
@@ -220,7 +460,6 @@
     "nativeNone": "No native trigger starts this node. Add the action \"Run a workflow\" to a trigger:",
     "nativeOpen": "open Triggers",
     "nativeDisabled": "off",
-    
     "connections": "Connections",
     "noConnections": "Not connected yet. Drag from a port to another node.",
     "incoming": "Incoming",
@@ -429,7 +668,9 @@
       "noDelay": "No delay",
       "noTemplate": "No template"
     },
-    "fields": {"slug": "Route", "auth": "Signature", 
+    "fields": {
+      "slug": "Route",
+      "auth": "Signature",
       "cron": "Cron",
       "tz": "Time zone",
       "kind": "Kind",
@@ -707,7 +948,11 @@
     "downgradeCancelled": "Kept the current licence."
   },
   "notifications": {
-    "kind": { "alert": "Alert", "action_required": "Needs you", "report": "Report" },
+    "kind": {
+      "alert": "Alert",
+      "action_required": "Needs you",
+      "report": "Report"
+    },
     "urgent": "Urgent",
     "dismissed": "Dismissed",
     "copy": "Copy",
@@ -739,13 +984,32 @@
       "listen": "Listen to {sound}",
       "enable": "Sound for “{event}”",
       "event": {
-        "taskStarted": { "label": "Task started", "description": "A Kanban task of yours starts running: once per task, not again when it is retried. Review, merge and doc follow-ups stay silent.", "toast": "Also show a notification", "toastDescription": "An on-screen notice with the task's title, even with the sound off." },
-        "taskDone": { "label": "Task done", "description": "A Kanban task is marked done." },
-        "taskBlocked": { "label": "Task blocked or failed", "description": "A Kanban task stops: blocked, failed, or out of quota." },
-        "missionDone": { "label": "Mission finished", "description": "An agent ends its turn in a conversation you started — not the missions of Kanban tasks, which have their own sounds." },
-        "approval": { "label": "Approval needed", "description": "An agent waits on you: a permission or a question card." }
+        "taskStarted": {
+          "label": "Task started",
+          "description": "A Kanban task of yours starts running: once per task, not again when it is retried. Review, merge and doc follow-ups stay silent.",
+          "toast": "Also show a notification",
+          "toastDescription": "An on-screen notice with the task's title, even with the sound off."
+        },
+        "taskDone": {
+          "label": "Task done",
+          "description": "A Kanban task is marked done."
+        },
+        "taskBlocked": {
+          "label": "Task blocked or failed",
+          "description": "A Kanban task stops: blocked, failed, or out of quota."
+        },
+        "missionDone": {
+          "label": "Mission finished",
+          "description": "An agent ends its turn in a conversation you started — not the missions of Kanban tasks, which have their own sounds."
+        },
+        "approval": {
+          "label": "Approval needed",
+          "description": "An agent waits on you: a permission or a question card."
+        }
       },
-      "toast": { "taskStarted": "Task started" },
+      "toast": {
+        "taskStarted": "Task started"
+      },
       "custom": {
         "option": "My file",
         "browse": "Choose a sound file for “{event}”",
@@ -1355,7 +1619,9 @@
       "plugins": "Plugins"
     },
     "tab": {
-      "plugins": { "developer": "Developer mode" },
+      "plugins": {
+        "developer": "Developer mode"
+      },
       "instructions": {
         "preamble": "Timon preamble",
         "global": "Global instructions"
@@ -1421,7 +1687,9 @@
     "countOne": "{count} result",
     "countOther": "{count} results",
     "tabKeywords": {
-      "plugins": { "developer": "developer mode unsigned plugin signature load local trust code" },
+      "plugins": {
+        "developer": "developer mode unsigned plugin signature load local trust code"
+      },
       "interface": {
         "appearance": "theme dark light mode colors palette look skin",
         "language": "language locale french english français translation",
@@ -1692,7 +1960,11 @@
     "orgTitle": "Organization",
     "orgHint": "Drag an agent onto another to change who it reports to. Drag a project lead onto a pole to move the project.",
     "orgActions": "Actions for {name}",
-    "orgRootDrop": "Drop here to put an agent back under its default manager", "mainSeatEmpty": "No main orchestrator", "mainSeatEmptyHint": "Agents without a manager stay at the root until an agent holds the seat.", "mainSeatNoCandidate": "No agent can hold the seat: give the orchestrator role to an agent without a project.", "mainSeatSet": "Set {name} as main orchestrator"
+    "orgRootDrop": "Drop here to put an agent back under its default manager",
+    "mainSeatEmpty": "No main orchestrator",
+    "mainSeatEmptyHint": "Agents without a manager stay at the root until an agent holds the seat.",
+    "mainSeatNoCandidate": "No agent can hold the seat: give the orchestrator role to an agent without a project.",
+    "mainSeatSet": "Set {name} as main orchestrator"
   },
   "chatPage": {
     "allowSession": "Allow for this session",
@@ -2463,7 +2735,14 @@
       "noMatch": "No widget matches.",
       "empty": "Every widget is already on screen.",
       "pages": "Pages",
-      "page": {"all": "All", "cockpit": "Cockpit", "chat": "Chat", "agents": "Agents", "sidebars": "Sidebars", "topbar": "Top bar"},
+      "page": {
+        "all": "All",
+        "cockpit": "Cockpit",
+        "chat": "Chat",
+        "agents": "Agents",
+        "sidebars": "Sidebars",
+        "topbar": "Top bar"
+      },
       "origin": "{surface} · {plugin}"
     },
     "surface": {
@@ -2740,7 +3019,10 @@
     "timelineLabel": "Injection steps, in the order they are sent",
     "pickStep": "Pick a step to read it.",
     "total": "Total",
-    "view": { "rendered": "Rendered", "source": "Source" },
+    "view": {
+      "rendered": "Rendered",
+      "source": "Source"
+    },
     "origin": {
       "timon": "timon",
       "user": "you",
@@ -2754,7 +3036,10 @@
     "save": "Save",
     "cancel": "Cancel",
     "editor": "Edit this injection",
-    "skillMode": { "include": "catalogue", "import": "imported" },
+    "skillMode": {
+      "include": "catalogue",
+      "import": "imported"
+    },
     "skillVia": {
       "global": "all agents",
       "project": "project",
@@ -2907,26 +3192,26 @@
     "logsFolderHint": "One file per day for the daemon and the app, kept 14 days by default (the Log retention setting). Newest lines are at the end of each file."
   },
   "desktopUninstall": {
-  "category": "Desktop application",
-  "title": "Uninstall Timon",
-  "description": "Stops agents, workflows and browsers on this computer, removes the service and disables launch at login. PWAs connected to this instance will be disconnected.",
-  "dataPath": "Data directory for this installation",
-  "dataChoice": "What should happen to your data?",
-  "keep": "Keep my data (recommended)",
-  "keepDescription": "Keep agents, conversations, settings, credentials and browser profiles for reinstallation. Program copies used by the service will be removed.",
-  "delete": "Delete everything",
-  "deleteDescription": "Permanently deletes all contents of the Timon directory shown above, including agents, conversations, settings, secrets, cookies and browser profiles. This cannot be undone.",
-  "external": "Project folders and external configurations (Claude, Codex, etc.) outside the Timon directory are preserved. Symbolic links to external directories are not followed.",
-  "confirmation": "Type SUPPRIMER to authorize permanent deletion.",
-  "finish": {
-    "mac": "After Timon closes and cleanup finishes, move Timon.app to the Trash in Finder.",
-    "windows": "After cleanup finishes, remove Timon using Windows Apps settings.",
-    "appimage": "After cleanup finishes, delete the AppImage file.",
-    "linux": "After cleanup finishes, remove the Timon package using your distribution’s software manager."
+    "category": "Desktop application",
+    "title": "Uninstall Timon",
+    "description": "Stops agents, workflows and browsers on this computer, removes the service and disables launch at login. PWAs connected to this instance will be disconnected.",
+    "dataPath": "Data directory for this installation",
+    "dataChoice": "What should happen to your data?",
+    "keep": "Keep my data (recommended)",
+    "keepDescription": "Keep agents, conversations, settings, credentials and browser profiles for reinstallation. Program copies used by the service will be removed.",
+    "delete": "Delete everything",
+    "deleteDescription": "Permanently deletes all contents of the Timon directory shown above, including agents, conversations, settings, secrets, cookies and browser profiles. This cannot be undone.",
+    "external": "Project folders and external configurations (Claude, Codex, etc.) outside the Timon directory are preserved. Symbolic links to external directories are not followed.",
+    "confirmation": "Type SUPPRIMER to authorize permanent deletion.",
+    "finish": {
+      "mac": "After Timon closes and cleanup finishes, move Timon.app to the Trash in Finder.",
+      "windows": "After cleanup finishes, remove Timon using Windows Apps settings.",
+      "appimage": "After cleanup finishes, delete the AppImage file.",
+      "linux": "After cleanup finishes, remove the Timon package using your distribution’s software manager."
+    },
+    "action": "Uninstall Timon…",
+    "busy": "Uninstalling…"
   },
-  "action": "Uninstall Timon…",
-  "busy": "Uninstalling…"
-},
   "freeLicense": {
     "restrictedAccounts": "{count} additional account(s) suspended. The first active superadmin keeps access; no account or data was deleted.",
     "retainedData": "After a return to Free, additional accounts remain stored but unavailable. Every feature and plugin stays available. A valid license restores the accounts it covers.",
@@ -3132,12 +3417,12 @@
       "resume": "Resume",
       "retry": "Retry",
       "close": "Close",
-      "loading": "Reading the dictation engine's state\u2026",
+      "loading": "Reading the dictation engine's state…",
       "unavailable": "Local dictation is not available on this computer.",
       "progressLabel": "Speech model download",
-      "downloading": "Downloading\u2026 {received} of {total}",
+      "downloading": "Downloading… {received} of {total}",
       "paused": "Paused at {received} of {total}",
-      "verifying": "Checking the downloaded files\u2026",
+      "verifying": "Checking the downloaded files…",
       "ready": "Speech model downloaded ({size}). Click the microphone to dictate.",
       "errors": {
         "network": "The download failed: no connection. Check your network and retry.",
@@ -3254,9 +3539,9 @@
     "pushToTalk": "Hold a key to talk",
     "pushToTalkDescription": "Dictation opens while the key is held down and closes as soon as it is released. Without it, the mic button toggles it.",
     "key": "Key",
-    "keyDescription": "Press the key you want to hold. Escape cancels. Keys that type text are refused \u2014 they would break typing a message.",
+    "keyDescription": "Press the key you want to hold. Escape cancels. Keys that type text are refused — they would break typing a message.",
     "changeKey": "Change key",
-    "capturing": "Press a key\u2026",
+    "capturing": "Press a key…",
     "keyRefused": "{key} cannot be used: this key types or drives the page."
   },
   "backendsSettings": {
@@ -3332,6 +3617,10 @@
     },
     "empty": "No provider added yet.",
     "add": "Add a provider",
+    "presets": {
+      "omlx": "oMLX (local)",
+      "deepseek": "DeepSeek API (web)"
+    },
     "added": "Provider added.",
     "save": "Save",
     "remove": "Remove",
@@ -3428,7 +3717,7 @@
   "gptLive": {
     "start": "Start a voice conversation (GPT-Live)",
     "stop": "End the voice conversation",
-    "connecting": "Connecting the voice conversation\u2026",
+    "connecting": "Connecting the voice conversation…",
     "live": "Voice conversation in progress",
     "errorDisabled": "GPT-Live is disabled in {settingsPath}.",
     "errorNoKey": "No GPT-Live API key in the vault: add one in {settingsPath}.",
@@ -3437,7 +3726,7 @@
     "errorMic": "Microphone access was denied.",
     "errorGeneric": "The voice conversation could not start: {detail}",
     "errorDropped": "The voice conversation was interrupted.",
-    "closing": "Ending the voice conversation\u2026",
+    "closing": "Ending the voice conversation…",
     "voiceTag": "voice",
     "voiceUserHint": "Spoken during a GPT-Live conversation (transcription)",
     "voiceAgentHint": "Said aloud by GPT-Live"

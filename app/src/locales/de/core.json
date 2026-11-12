@@ -3612,6 +3612,10 @@
       "agents": "Agenten",
       "routines": "Routinen",
       "tasks": "Ausstehende Aufgaben"
+    },
+    "presets": {
+      "omlx": "oMLX (local)",
+      "deepseek": "DeepSeek API (web)"
     }
   },
   "gptLiveSettings": {

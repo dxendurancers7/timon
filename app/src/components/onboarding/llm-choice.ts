@@ -6,8 +6,8 @@
 import { BRAND } from '@/lib/brand';
 import { providerCliState, readyForSetupChat, type ProviderCli } from '@/lib/provider-clis';
 
-/** The block under the header: the two choices, the provider cards, or the local models. */
-export type LlmView = 'choose' | 'plan' | 'local';
+/** The block under the header: the choices, the provider cards, the local models, or a web API. */
+export type LlmView = 'choose' | 'plan' | 'local' | 'web';
 
 /**
  * What "Back" does on this step: from a block back to the two choices, on

@@ -3612,6 +3612,10 @@
       "agents": "エージェント",
       "routines": "ルーティン",
       "tasks": "待機中のタスク"
+    },
+    "presets": {
+      "omlx": "oMLX (local)",
+      "deepseek": "DeepSeek API (web)"
     }
   },
   "gptLiveSettings": {
