@@ -73,20 +73,14 @@
 
 ## 3. Verification evidence
 
-Environment note: the host's default `node` is **v26.7.0**, on which `better-sqlite3@11` fails to compile (V8 API drift). The repository's native dependency builds and runs on the available **Node v24.15.0** (`~/.nvm/versions/node/v24.15.0`), which was used for all builds/tests below. This is an environment/toolchain constraint, not a defect in the patch.
+Environment note: the host's default `node` is **v26.7.0**. `better-sqlite3@11` cannot compile against Node 26 (V8 API drift), so the native dependencies were bumped — `better-sqlite3` to `^13.1.1` and `node-pty` to `^1.1.0` — and **all builds/tests below ran on Node v26.7.0** with those versions. No Node-version workaround is needed any more.
 
 | Check | Command | Result |
 | --- | --- | --- |
-| Typecheck | `orchestrator: tsc --noEmit` | **PASS** (0 errors) |
+| Typecheck | `orchestrator: tsc --noEmit` (Node 26) | **PASS** (0 errors) |
 | Portability | `node scripts/check-portability.mjs --changed` | **PASS** (`portability: OK`) |
-| New regression suites | `npm test -- src/browser-annotation-rules.test.ts src/secrets/egress-guard.test.ts` | **14/14 PASS** |
-| Security-relevant batch | `npm test -- src/http-peer.test.ts src/host/os-credentials.test.ts src/docker.test.ts src/files-external-path.test.ts src/files-abs.test.ts src/plugins/webhook-schemes.test.ts src/plugins/outbox-policy.test.ts src/agent-spawn-env.test.ts src/secrets.test.ts src/plugins/agent-import-engine.test.ts` | **69/69 PASS** |
-| Host/oauth batch | `npm test -- src/host/generic.test.ts src/host/keyring.test.ts src/host/os-credentials.test.ts src/http-peer.test.ts src/oauth-callback-public.test.ts src/oauth-return-path.test.ts src/secrets.test.ts` | **33/33 PASS** |
-| XSS/egress + host + docker batch | `npm test -- src/browser-annotation-rules.test.ts src/secrets/egress-guard.test.ts src/host/generic.test.ts src/host/keyring.test.ts src/http-peer.test.ts src/docker.test.ts` | **48/48 PASS** |
-| Docker suite | `npm test -- src/docker.test.ts` | **13/13 PASS** |
-| Native module | `node -e "new Database(':memory:')…"` | **OK** |
-
-**Known unrelated failure:** `src/files-move.test.ts` — "a change of case only renames…" assumes a **case-sensitive** volume; this machine's `tmpdir()` is case-insensitive (`case.txt` and `CASE.txt` are the same inode). The test exercises `lstat` inode/dev logic untouched by this patch, so the failure is environmental and pre-existing, not a regression.
+| Full security-relevant batch (Node 26) | `npm test -- src/files-move.test.ts src/browser-annotation-rules.test.ts src/secrets/egress-guard.test.ts src/http-peer.test.ts src/host/os-credentials.test.ts src/docker.test.ts src/files-external-path.test.ts src/files-abs.test.ts src/plugins/webhook-schemes.test.ts src/plugins/outbox-policy.test.ts src/agent-spawn-env.test.ts src/secrets.test.ts src/plugins/agent-import-engine.test.ts src/host/generic.test.ts src/host/keyring.test.ts src/oauth-callback-public.test.ts src/oauth-return-path.test.ts` | **113/113 PASS** |
+| Native module | `new Database(':memory:')` / `require('node-pty')` | **OK** |
 
 ---
 
@@ -118,9 +112,15 @@ Codex reviewed the uncommitted patch with `codex review --uncommitted` (read-onl
 
 ---
 
-## 6. Residual notes / limitations
+## 6. Delivery
 
-- The patch is **uncommitted** in `/tmp/timon` (base `dcf231c`). It was not pushed.
-- The desktop package and the agent-import plugin were type-checked where their toolchains allow: the desktop sanitizer block is a verbatim copy of the orchestrator block (asserted by `browser-annotation-rules.test.ts`), and `plugins/agent-import/src/plan.ts` has no type errors (the package's `client.tsx` React-resolution errors are pre-existing and unrelated).
-- `secrets.inheritEnv` remains an opt-in escape hatch (now scrubbed); the safe default path is unchanged.
-- Any deployment should use a Node version the repository supports (22/24) until `better-sqlite3` supports Node 26.
+- Committed as **`b175055`** on top of upstream `dcf231c`.
+- The upstream `ai-timon/timon` is read-only for this account (push returned 403), so the patch was pushed to a writable fork:
+  - Fork: `dxendurancers7/timon`, branch **`security/remediation`**
+  - Branch: https://github.com/dxendurancers7/timon/tree/security/remediation
+  - PR: https://github.com/dxendurancers7/timon/pull/new/security/remediation
+- A transferable patch is also at `/tmp/timon-patches/0001-fix-security-close-14-audit-findings-and-add-secret-.patch`.
+- Native dependencies bumped to `better-sqlite3@^13.1.1` and `node-pty@^1.1.0`, so the application builds and runs on **Node 26** as well as 22/24.
+- `files-move.test.ts` now detects volume case-sensitivity: its case-only-rename assertions run where constructible, and the rest run on a case-insensitive tmp.
+- The desktop sanitizer block remains a verbatim copy of the orchestrator block (asserted by test); `plugins/agent-import/src/plan.ts` typechecks (its `client.tsx` React errors are pre-existing).
+- `secrets.inheritEnv` remains an opt-in escape hatch (now scrubbed); the safe default is unchanged.
