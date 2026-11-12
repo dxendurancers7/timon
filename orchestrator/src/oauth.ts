@@ -15,7 +15,9 @@
  * the user just retries.
  */
 import { createHash, randomBytes } from 'node:crypto';
+import { isIP } from 'node:net';
 import type { OAuthClient, OAuthMetadata, OAuthTokens } from './plugins/contract/mcp-servers.js';
+import { assertUrlShape, classifyAddress, guardedFetch, type DestinationPolicy } from './plugins/net-guard.js';
 export type { OAuthClient, OAuthMetadata, OAuthTokens } from './plugins/contract/mcp-servers.js';
 
 export type PendingAuth = {
@@ -31,6 +33,8 @@ export type PendingAuth = {
   return_to?: string;
   /** The app page the browser goes back to (`OAUTH_RETURN_PATHS`), `/mcp` when absent. */
   return_path?: OAuthReturnPath;
+  /** The MCP URL the user configured, kept so the callback judges egress against it. */
+  seed_url?: string;
 };
 
 /** Where a finished authorization may send the browser back: a closed list, never a caller's path. */
@@ -80,6 +84,64 @@ export function takePending(state: string): PendingAuth | null {
   return v;
 }
 
+/**
+ * A host the user may legitimately self-host an MCP server on: `localhost`, a
+ * `.local`/`.internal`/`.lan`/`.home` name, or a private IP literal. A plain
+ * DNS name is NOT self-hosted: `classifyAddress` answers `blocked` for any
+ * non-IP string, so treating "not public" as private would fail open and let a
+ * public server steer the daemon into `127.0.0.1` or the LAN.
+ */
+function isSelfHosted(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.replace(/^\[|\]$/g, '').toLowerCase();
+    if (host === 'localhost' || /\.(localhost|local|internal|lan|home)$/.test(host)) return true;
+    if (isIP(host) === 0) return false;
+    return classifyAddress(host) !== 'public';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Egress policy for one OAuth request. The URL the user configured — and a
+ * follow-up on the same origin (the `/.well-known/...` paths) — may live on
+ * loopback, a LAN, a split-DNS name or a tailnet: the user chose it, so private
+ * access is allowed (metadata/link-local stay blocked by the guard). A URL the
+ * server supplies on ANOTHER origin may reach private space only when both ends
+ * are explicitly local names / private literals, so a public MCP server cannot
+ * steer the daemon into the internal network.
+ */
+function oauthPolicy(seed: string | undefined, target: string): DestinationPolicy {
+  if (!seed) return { allowPrivateNetwork: false };
+  let seedUrl: URL;
+  let targetUrl: URL;
+  try { seedUrl = new URL(seed); targetUrl = new URL(target); } catch { return { allowPrivateNetwork: false }; }
+  if (targetUrl.origin === seedUrl.origin) {
+    // The user configured this transport: plain HTTP stays usable on a LAN MCP,
+    // but only for a URL that is itself HTTP (no silent downgrade of a redirect).
+    return {
+      allowPrivateNetwork: true,
+      allowPlainHttp: targetUrl.protocol === 'http:' && seedUrl.protocol === 'http:',
+    };
+  }
+  const selfHosted = isSelfHosted(seed) && isSelfHosted(target);
+  return {
+    allowPrivateNetwork: selfHosted,
+    // A self-hosted stack may advertise its authorization server on another port
+    // over plain HTTP; keep that, but never downgrade an HTTPS seed.
+    allowPlainHttp: selfHosted && seedUrl.protocol === 'http:' && targetUrl.protocol === 'http:',
+  };
+}
+
+/**
+ * `fetch` through the egress guard. Every URL is shape-checked (http/https only,
+ * no credentials) and every resolved address is judged, redirects included.
+ * `seed` is the MCP URL the user configured; omit it to require a public target.
+ */
+function oauthFetch(seed: string | undefined, url: string, init?: Parameters<typeof globalThis.fetch>[1]): Promise<Response> {
+  return guardedFetch(url, init, { destination: (u) => oauthPolicy(seed, u.href) });
+}
+
 function b64url(buf: Buffer): string {
   return buf.toString('base64').replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
 }
@@ -106,12 +168,14 @@ export function randomState(): string {
  *      origin (common for self-hosted MCPs that serve auth from the same host).
  */
 export async function discoverOAuth(mcpUrl: string): Promise<OAuthMetadata> {
-  const origin = new URL(mcpUrl).origin;
+  const seed = new URL(mcpUrl);
+  assertUrlShape(seed);
+  const origin = seed.origin;
 
   // (1) probe the MCP endpoint and look at the WWW-Authenticate hint
   let resourceMetadataUrl: string | undefined;
   try {
-    const r = await fetch(mcpUrl, {
+    const r = await oauthFetch(mcpUrl, mcpUrl, {
       method: 'POST',
       headers: { accept: 'application/json,text/event-stream', 'content-type': 'application/json' },
       body: JSON.stringify({
@@ -131,7 +195,7 @@ export async function discoverOAuth(mcpUrl: string): Promise<OAuthMetadata> {
   // (2) explicit resource-metadata URL → fetch it, follow authorization_servers
   const triedAsUrls: string[] = [];
   if (resourceMetadataUrl) {
-    const rmd = await fetchJson(resourceMetadataUrl);
+    const rmd = await fetchJson(mcpUrl, resourceMetadataUrl);
     const asList = Array.isArray(rmd?.authorization_servers) ? rmd.authorization_servers : [];
     for (const as of asList) {
       if (typeof as === 'string') triedAsUrls.push(asMetadataUrl(as));
@@ -140,7 +204,7 @@ export async function discoverOAuth(mcpUrl: string): Promise<OAuthMetadata> {
 
   // (3) try /.well-known/oauth-protected-resource at the MCP's origin
   if (!triedAsUrls.length) {
-    const rmd = await fetchJsonSafe(origin + '/.well-known/oauth-protected-resource');
+    const rmd = await fetchJsonSafe(mcpUrl, origin + '/.well-known/oauth-protected-resource');
     const asList = Array.isArray(rmd?.authorization_servers) ? rmd.authorization_servers : [];
     for (const as of asList) {
       if (typeof as === 'string') triedAsUrls.push(asMetadataUrl(as));
@@ -153,7 +217,7 @@ export async function discoverOAuth(mcpUrl: string): Promise<OAuthMetadata> {
   }
 
   for (const url of triedAsUrls) {
-    const md = await fetchJsonSafe(url);
+    const md = await fetchJsonSafe(mcpUrl, url);
     const auth = typeof md?.authorization_endpoint === 'string' ? md.authorization_endpoint : null;
     const tok = typeof md?.token_endpoint === 'string' ? md.token_endpoint : null;
     if (auth && tok) {
@@ -189,15 +253,15 @@ function asMetadataUrl(asIssuer: string): string {
   return `${u.origin}/.well-known/oauth-authorization-server${path}`;
 }
 
-async function fetchJson(url: string): Promise<Record<string, unknown>> {
-  const r = await fetch(url, { headers: { accept: 'application/json' } });
+async function fetchJson(seed: string, url: string): Promise<Record<string, unknown>> {
+  const r = await oauthFetch(seed, url, { headers: { accept: 'application/json' } });
   if (!r.ok) throw new Error(`fetch ${url} → ${r.status}`);
   return (await r.json()) as Record<string, unknown>;
 }
 
-async function fetchJsonSafe(url: string): Promise<Record<string, unknown> | null> {
+async function fetchJsonSafe(seed: string, url: string): Promise<Record<string, unknown> | null> {
   try {
-    return await fetchJson(url);
+    return await fetchJson(seed, url);
   } catch {
     return null;
   }
@@ -211,11 +275,12 @@ export async function dynamicRegister(
   metadata: OAuthMetadata,
   redirectUri: string,
   clientName = 'TIMON',
+  seedUrl?: string,
 ): Promise<OAuthClient> {
   if (!metadata.registration_endpoint) {
     throw new Error('authorization server does not support dynamic client registration');
   }
-  const r = await fetch(metadata.registration_endpoint, {
+  const r = await oauthFetch(seedUrl, metadata.registration_endpoint, {
     method: 'POST',
     headers: { 'content-type': 'application/json', accept: 'application/json' },
     body: JSON.stringify({
@@ -261,6 +326,7 @@ export async function exchangeCode(
   redirectUri: string,
   code: string,
   codeVerifier: string,
+  seedUrl?: string,
 ): Promise<OAuthTokens> {
   const body = new URLSearchParams({
     grant_type: 'authorization_code',
@@ -270,7 +336,7 @@ export async function exchangeCode(
     code_verifier: codeVerifier,
   });
   if (client.client_secret) body.set('client_secret', client.client_secret);
-  const r = await fetch(metadata.token_endpoint, {
+  const r = await oauthFetch(seedUrl, metadata.token_endpoint, {
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
     body: body.toString(),
@@ -297,6 +363,7 @@ export async function refreshTokens(
   metadata: OAuthMetadata,
   client: OAuthClient,
   refreshToken: string,
+  seedUrl?: string,
 ): Promise<OAuthTokens> {
   const body = new URLSearchParams({
     grant_type: 'refresh_token',
@@ -304,7 +371,7 @@ export async function refreshTokens(
     client_id: client.client_id,
   });
   if (client.client_secret) body.set('client_secret', client.client_secret);
-  const r = await fetch(metadata.token_endpoint, {
+  const r = await oauthFetch(seedUrl, metadata.token_endpoint, {
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
     body: body.toString(),

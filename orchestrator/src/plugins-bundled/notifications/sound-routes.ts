@@ -16,7 +16,7 @@
  *  - **Written atomically**, `0600`, under a directory per account.
  */
 import express, { type Request, type Response, type Router } from 'express';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { chmodSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'zod';
@@ -142,11 +142,15 @@ export function registerSoundRoutes(router: Router): void {
       }
       const file = fileOf(userId, event.data);
       mkdirSync(join(NOTIFICATION_SOUNDS_DIR, userId), { recursive: true, mode: 0o700 });
-      const tmp = `${file}.tmp`;
-      writeFileSync(tmp, body, { mode: 0o600 });
+      // An unpredictable name opened with O_EXCL: a symlink or file planted at a
+      // guessable `<file>.tmp` cannot be followed, so the write cannot be steered.
+      const tmp = `${file}.${randomUUID()}.tmp`;
+      writeFileSync(tmp, body, { mode: 0o600, flag: 'wx' });
       renameSync(tmp, file);
       const meta: Meta = { mime, name: cleanName(req.header('x-sound-name')), size: body.length, updatedAt: Date.now() };
-      writeFileSync(`${file}.json`, JSON.stringify(meta), { mode: 0o600 });
+      const metaTmp = `${file}.${randomUUID()}.json.tmp`;
+      writeFileSync(metaTmp, JSON.stringify(meta), { mode: 0o600, flag: 'wx' });
+      renameSync(metaTmp, `${file}.json`);
       try { chmodSync(file, 0o600); } catch { /* best effort off POSIX */ }
       auditRequest(req, 'notification-sound.set', event.data);
       res.setHeader('Cache-Control', 'no-store');

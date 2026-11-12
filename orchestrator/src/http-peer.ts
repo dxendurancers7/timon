@@ -34,20 +34,29 @@ export type DirectLoopbackVerdict =
   | { direct: true }
   | { direct: false; reason: 'not_loopback' | 'proxy_header' | 'behind_tls_proxy'; header?: string };
 
+/** A Host authority that names this machine (`localhost`, `127.x`, `[::1]`). */
+function hostIsLoopback(host: string): boolean {
+  const name = host.replace(/:\d+$/, '').replace(/^\[|\]$/g, '').toLowerCase();
+  return name === 'localhost' || name === '::1' || /^127\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(name);
+}
+
 /**
  * Whether a request comes from a process on this machine talking to the
  * daemon itself, which is what a loopback peer is taken to prove. The peer
  * alone proves nothing once a proxy on this host publishes the daemon: every
  * client of `tailscale serve` arrives from 127.0.0.1. So the peer must be the
- * loopback, the request must carry no forwarding header, and the daemon must
+ * loopback, the request must carry no forwarding header, the daemon must
  * not be declared behind a TLS proxy (`daemon.behindTlsProxy`) — a proxy that
- * writes no header at all is still a proxy.
+ * writes no header at all is still a proxy — and a Host that is present must
+ * name this machine (a proxy that rewrites Host to a public name is refused).
  */
 export function directLoopbackVerdict(req: Request, behindTlsProxy: boolean): DirectLoopbackVerdict {
   if (!isLoopbackPeer(req)) return { direct: false, reason: 'not_loopback' };
   const header = proxyHeaderOf(req.headers);
   if (header !== undefined) return { direct: false, reason: 'proxy_header', header };
   if (behindTlsProxy) return { direct: false, reason: 'behind_tls_proxy' };
+  const host = typeof req.headers.host === 'string' ? req.headers.host : '';
+  if (host && !hostIsLoopback(host)) return { direct: false, reason: 'proxy_header', header: 'host' };
   return { direct: true };
 }
 

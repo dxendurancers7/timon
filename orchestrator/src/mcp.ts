@@ -645,7 +645,7 @@ async function maybeRefreshTokens(s: McpServer, force = false): Promise<McpServe
   const fresh = tokens.expires_at && tokens.expires_at - 30_000 > Date.now();
   if (fresh && !force) return s;
   try {
-    const next = await refreshTokens(metadata, client, tokens.refresh_token);
+    const next = await refreshTokens(metadata, client, tokens.refresh_token, s.transport.url);
     const updated: McpServer = {
       ...s,
       transport: {

@@ -126,3 +126,30 @@ test('the comment keeps its lines and loses control characters', () => {
   assert.equal(daemon.sanitizeAnnotationComment('  make it\r\nbigger\u0007 '), 'make it\nbigger');
   assert.equal(daemon.sanitizeAnnotationComment('x'.repeat(5_000)).length, daemon.ANNOTATION_COMMENT_MAX);
 });
+
+test('the outerHTML pass removes event handlers delimited by / as well as whitespace', () => {
+  // HTML allows `/` between attributes: these are the classic `<svg/onload=...>` payloads.
+  for (const payload of [
+    '<svg/onload=alert(1)>',
+    '<img/src=x/onerror=alert(1)>',
+    '<div onclick="steal()">x</div>',
+    '<body onload=alert(1)>',
+  ]) {
+    const { html } = daemon.sanitizeOuterHtml(payload);
+    assert.doesNotMatch(html, /on\w+\s*=/i, `${payload} => ${html}`);
+  }
+  // Field values and script/style elements stay gone; ordinary markup is untouched.
+  assert.equal(daemon.sanitizeOuterHtml('<button class="btn" onclick="steal()">Pay</button>').html, '<button class="btn">Pay</button>');
+  assert.equal(daemon.sanitizeOuterHtml('<input value="hunter2" name="pw">').html, '<input name="pw">');
+  assert.equal(daemon.sanitizeOuterHtml('<a href="https://ok.example/x">ok</a>').html, '<a href="https://ok.example/x">ok</a>');
+  // A slash inside a quoted URL is not an attribute delimiter: the href survives intact.
+  assert.equal(daemon.sanitizeOuterHtml('<a href="https://example.com/value=foo">link</a>').html,
+    '<a href="https://example.com/value=foo">link</a>');
+  // A quote inside a comment must not swallow the tag after it.
+  assert.equal(daemon.sanitizeOuterHtml('<div><!-- don\'t --><input value="private"></div>').html,
+    '<div><!-- don\'t --><input></div>');
+  // A tag cut off by truncation still loses its field value.
+  assert.equal(daemon.sanitizeOuterHtml('<input value="private"').html, '<input');
+  assert.doesNotMatch(daemon.sanitizeOuterHtml('<a href="javascript:alert(1)">x</a>').html, /javascript:/i);
+  assert.equal(daemon.sanitizeOuterHtml('<script>alert(1)</script>').html, '');
+});

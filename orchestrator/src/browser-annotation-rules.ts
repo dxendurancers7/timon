@@ -91,11 +91,74 @@ export function locatorsOf(target: Pick<AnnotationTarget, 'selector' | 'role' | 
 }
 
 const VOID_OR_RAW = 'script|style|noscript|template|iframe|object|embed';
+/** A quoted value is consumed whole and kept; an unsafe attribute is removed only at a
+ *  delimiter, so `/value=` inside an `href` is never mistaken for an attribute. */
+const QUOTED_OR_ATTR = String.raw`"[^"]*"|'[^']*'|[\s/](?:value|srcdoc|on[a-z]+)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)`;
+
+/** Drop unsafe attributes inside ONE tag (`<...>`); quoted values are kept whole. */
+function stripUnsafeAttributes(tag: string): string {
+  return tag.replace(new RegExp(QUOTED_OR_ATTR, 'gi'), (match) =>
+    match[0] === '"' || match[0] === "'" ? match : '');
+}
+
+/**
+ * Walk the markup tag by tag. A quote in TEXT must not swallow the tag after it:
+ * only a `<tag …>` span is handed to `stripUnsafeAttributes`, and the span ends at
+ * the first `>` outside a quoted attribute value.
+ */
+function sanitizeMarkup(html: string): string {
+  let out = '';
+  let i = 0;
+  while (i < html.length) {
+    const lt = html.indexOf('<', i);
+    if (lt < 0) { out += html.slice(i); break; }
+    out += html.slice(i, lt);
+    const next = html[lt + 1] ?? '';
+    // `<` that does not open a tag (a comparison in text) is literal.
+    if (!/[A-Za-z/!]/.test(next)) { out += '<'; i = lt + 1; continue; }
+    // A comment may hold a quote (`<!-- don't -->`): copy it whole, never scan it.
+    if (html.startsWith('<!--', lt)) {
+      const end = html.indexOf('-->', lt + 4);
+      if (end < 0) { out += html.slice(lt); break; }
+      out += html.slice(lt, end + 3);
+      i = end + 3;
+      continue;
+    }
+    // A declaration (`<!doctype …>`) carries no attributes; its quotes are not ours.
+    if (next === '!') {
+      const end = html.indexOf('>', lt + 1);
+      if (end < 0) { out += html.slice(lt); break; }
+      out += html.slice(lt, end + 1);
+      i = end + 1;
+      continue;
+    }
+    let j = lt + 1;
+    let quote: string | null = null;
+    for (; j < html.length; j++) {
+      const c = html[j]!;
+      if (quote) { if (c === quote) quote = null; }
+      else if (c === '"' || c === "'") quote = c;
+      else if (c === '>') break;
+    }
+    if (j >= html.length) {
+      // A tag cut off by truncation still has its attributes stripped.
+      out += stripUnsafeAttributes(html.slice(lt));
+      break;
+    }
+    out += stripUnsafeAttributes(html.slice(lt, j + 1));
+    i = j + 1;
+  }
+  return out;
+}
 
 /**
  * Second pass over the outerHTML the preload already stripped: a page that swapped the DOM between
  * the two reads still cannot ship a script, a style sheet or a field value. Regexes, not a parser:
  * the result is bounded data shown to an agent, never markup rendered anywhere.
+ *
+ * HTML allows `/` as well as whitespace between attributes, so the attribute patterns accept both
+ * (`<svg/onload=...>` is the classic payload). Inline handlers, field values and `srcdoc` are
+ * removed, and `javascript:`/`vbscript:`/`data:` in a navigable attribute is neutralised.
  */
 export function sanitizeOuterHtml(raw: unknown): { html: string; truncated: boolean } {
   if (typeof raw !== 'string') return { html: '', truncated: false };
@@ -104,7 +167,9 @@ export function sanitizeOuterHtml(raw: unknown): { html: string; truncated: bool
   html = html.replace(new RegExp(`<(${VOID_OR_RAW})\\b[\\s\\S]*?(?:<\\/\\1\\s*>|$)`, 'gi'), '');
   html = html.replace(new RegExp(`<\\/?(?:${VOID_OR_RAW})\\b[^>]*>`, 'gi'), '');
   // Field values, `srcdoc` (which could hold any markup) and inline handlers.
-  html = html.replace(/\s(?:value|srcdoc|on[a-z]+)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '');
+  html = sanitizeMarkup(html);
+  // `javascript:`/`vbscript:`/`data:` in a navigable attribute is neutralised.
+  html = html.replace(/((?:href|src|xlink:href|action|formaction|poster|background)\s*=\s*["']?\s*)(?:javascript|vbscript|data)\s*:/gi, '$1#');
   html = html.replace(/(<textarea\b[^>]*>)[\s\S]*?(<\/textarea\s*>)/gi, '$1$2');
   html = html.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
   return { html: html.slice(0, ANNOTATION_OUTER_HTML_MAX),

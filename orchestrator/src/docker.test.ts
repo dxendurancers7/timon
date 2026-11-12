@@ -173,7 +173,8 @@ test('start d’un seul conteneur → seul son service est recréé', async () =
     act(slug, 'start', 'proj-db-1');
     const up = fake.calls.find((a) => a.includes('up'));
     assert.ok(up);
-    assert.deepEqual(up.slice(-3), ['up', '-d', 'db']);
+    // `--` terminates the options: a service label cannot be read as a flag.
+    assert.deepEqual(up.slice(-4), ['up', '-d', '--', 'db']);
   } finally { fake.restore(); }
 });
 

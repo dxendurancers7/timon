@@ -107,3 +107,50 @@ export function loadSecretsAtBoot(file: string = SECRETS_FILE): string[] {
   }
   return applied;
 }
+
+/** Credentials that are dangerous by name whatever the secrets file says: the
+ *  systemd unit or a compose `env_file:` may set them directly. */
+const KNOWN_SECRET_KEYS: readonly string[] = Object.freeze([
+  'TIMON_REMOTE_MASTER', 'TELEGRAM_BOT_TOKEN', 'TIMON_VAPID_PRIVATE_KEY', 'STRIPE_WEBHOOK_SECRET',
+]);
+/** A name that reads as a credential even when it is not in the file. */
+const SECRET_NAME_RE = /(?:^|_)(?:SECRET|PRIVATE_KEY|BOT_TOKEN|API_KEY|PASSWORD|PASSWD|CREDENTIALS?)$/i;
+
+/** NAMES of the keys declared in the secrets file. Never the values. */
+export function secretEnvNames(file: string = SECRETS_FILE): string[] {
+  try { return Object.keys(parseEnvFile(readFileSync(file, 'utf8'))); } catch { return []; }
+}
+
+/**
+ * A copy of `env` with every secret removed. The legacy `secrets.inheritEnv`
+ * mode inherits the ordinary environment, never the vault: it withholds the
+ * known credential names, everything declared in the secrets file, and any
+ * name that reads as a credential. Returns the names withheld (never values)
+ * so the caller can log them.
+ */
+export function scrubSecretEnv(env: NodeJS.ProcessEnv, file: string = SECRETS_FILE): { env: NodeJS.ProcessEnv; withheld: string[] } {
+  const declared = new Set(secretEnvNames(file));
+  const out: NodeJS.ProcessEnv = {};
+  const withheld: string[] = [];
+  for (const [key, value] of Object.entries(env)) {
+    if (value === undefined) continue;
+    if (KNOWN_SECRET_KEYS.includes(key) || declared.has(key) || SECRET_NAME_RE.test(key)) { withheld.push(key); continue; }
+    out[key] = value;
+  }
+  return { env: out, withheld };
+}
+
+/**
+ * The VALUES of the credentials present in the environment or the secrets file.
+ * Only for egress redaction, never logged. Values shorter than 8 characters are
+ * skipped so a common word cannot redact half of every payload.
+ */
+export function secretEnvValues(file: string = SECRETS_FILE): string[] {
+  const declared = new Set(secretEnvNames(file));
+  const values: string[] = [];
+  for (const [key, value] of Object.entries(process.env)) {
+    if (!value || value.length < 8) continue;
+    if (KNOWN_SECRET_KEYS.includes(key) || declared.has(key) || SECRET_NAME_RE.test(key)) values.push(value);
+  }
+  return values;
+}

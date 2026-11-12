@@ -414,7 +414,7 @@ export function rebuild(slug: string, target?: string): void {
   const composePrefix = composeArgs(status.cwd, status.project);
   if (!composePrefix) throw new Error('no compose files found for this project');
   const args = [...composePrefix, 'up', '-d', '--build'];
-  if (service) args.push(service);
+  if (service) args.push('--', service);
 
   builds.set(key, { startedAt: Date.now() });
   buildErrors.delete(key);
@@ -506,7 +506,7 @@ function recreateOnCurrentNetworks(
   if (!compose || (targeted && !service)) {
     throw new Error(`${gone} Run \`docker compose up -d\` in the project directory to recreate them on the current networks.`);
   }
-  const up = run('docker', [...compose, 'up', '-d', ...(service ? [service] : [])], ACTION_TIMEOUT_MS);
+  const up = run('docker', [...compose, 'up', '-d', ...(service ? ['--', service] : [])], ACTION_TIMEOUT_MS);
   cache = null;
   if (!up.ok) {
     throw new Error(`${gone} Recreating them with \`docker compose up -d\` failed too: ${up.err || 'unknown error'}. Check the networks declared in the compose file, then click Rebuild.`);

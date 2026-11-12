@@ -22,7 +22,8 @@ import { safeAttachmentName } from './chat-attachments.js';
 import type { OpenedFile } from './media-send.js';
 import { chooseRevealLane, getHost, type RevealVia } from './host/index.js';
 import { toPosixRelative } from './host/portable-names.js';
-import { agentDir } from './paths.js';
+import { TIMON_HOME, agentDir } from './paths.js';
+import { homedir } from 'node:os';
 import { existsSync } from 'node:fs';
 import { cwdProblem } from './cwd-check.js';
 import { readFileSync as readFile } from 'node:fs';
@@ -81,8 +82,24 @@ function safeResolve(root: string, rel: string): string {
   // On Windows a leading `\` is drive-rooted, not relative: strip it like `/`.
   const cleaned = (rel || '').replace(sep === '\\' ? /^[\\/]+/ : /^\/+/, '');
   const abs = resolve(root, cleaned);
-  // realpath after we know the target exists to follow symlinks too.
-  const real = existsSync(abs) ? realpathSync(abs) : abs;
+  // Resolve the deepest EXISTING ancestor, so a symlinked parent cannot smuggle
+  // a not-yet-created leaf outside the root. (Resolving only `abs` left a new
+  // path unresolved, and a later write followed the symlink out.)
+  let existing = abs;
+  const tail: string[] = [];
+  while (!existsSync(existing)) {
+    const parent = dirname(existing);
+    if (parent === existing) break;
+    tail.unshift(basename(existing));
+    existing = parent;
+  }
+  let real = abs;
+  try {
+    const anchor = realpathSync(existing);
+    real = tail.length ? join(anchor, ...tail) : anchor;
+  } catch {
+    real = abs;
+  }
   if (real !== root && !real.startsWith(root + sep)) {
     throw new Error('path escapes agent cwd');
   }
@@ -607,6 +624,31 @@ export function normalizeExternalPath(absPath: string, platform: NodeJS.Platform
   return platform === 'win32' && /^[\\/][a-z]:[\\/]/i.test(absPath) ? absPath.slice(1) : absPath;
 }
 
+/** Credential stores the external-file API must never open, wherever a link points. */
+function protectedExternalRoots(): string[] {
+  const home = homedir();
+  return [
+    join(TIMON_HOME, 'secrets.env'),
+    join(TIMON_HOME, 'daemon-token'),
+    join(home, '.ssh'), join(home, '.aws'), join(home, '.gnupg'), join(home, '.kube'),
+    join(home, '.netrc'), join(home, '.config', 'gcloud'), join(home, '.config', 'gh'),
+    join(home, '.claude'), join(home, '.codex'), join(home, '.docker'),
+  ];
+}
+
+const SECRET_FILE_NAMES = new Set([
+  '.env', 'secrets.env', 'credentials', 'credentials.json',
+  'id_rsa', 'id_ed25519', 'id_ecdsa', 'id_dsa',
+]);
+
+/** Refuse a real path that sits in a credential store or is named like a secret. */
+function assertExternalAllowed(real: string): void {
+  if (SECRET_FILE_NAMES.has(basename(real))) throw new Error('refused: this file holds secrets');
+  for (const root of protectedExternalRoots()) {
+    if (real === root || real.startsWith(root + sep)) throw new Error('refused: this location holds credentials');
+  }
+}
+
 /** An absolute local path to an existing regular file, resolved through symlinks. */
 function resolveExternalFile(input: string): string {
   if (typeof input !== 'string' || !input || input.includes('\0')) {
@@ -619,6 +661,7 @@ function resolveExternalFile(input: string): string {
   let real: string;
   try { real = realpathSync(absPath); } catch { throw new Error(`not found: ${input}`); }
   if (!statSync(real).isFile()) throw new Error(`not a file: ${input}`);
+  assertExternalAllowed(real);
   return real;
 }
 

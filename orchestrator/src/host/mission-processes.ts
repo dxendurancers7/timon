@@ -61,8 +61,10 @@ export function parseProcStartTime(stat: string): string | null {
   return start && /^\d+$/.test(start) ? start : null;
 }
 
-const WINDOWS_CREATION = (pid: number) =>
-  `$p = Get-CimInstance Win32_Process -Filter 'ProcessId=${pid}'; if ($p) { $p.CreationDate.ToUniversalTime().ToString('o') }`;
+// The pid travels in the environment and is cast to [int] inside PowerShell: no
+// value is ever spliced into the command string, so a non-integer could not
+// break out of the WMI filter.
+const WINDOWS_CREATION = String.raw`$p = Get-CimInstance Win32_Process -Filter ('ProcessId=' + [int]$env:TIMON_MISSION_PID); if ($p) { $p.CreationDate.ToUniversalTime().ToString('o') }`;
 
 /**
  * When `pid` started, as the OS words it, or null when it does not exist (or
@@ -81,7 +83,9 @@ export async function processIdentity(host: IdentityHost, pid: number): Promise<
       return `${boot || 'boot?'}:${start}`;
     }
     const r = host.platform === 'win32'
-      ? await host.execAsync('powershell', ['-NoProfile', '-NonInteractive', '-Command', WINDOWS_CREATION(pid)], { timeout: 10_000, windowsHide: true })
+      ? await host.execAsync('powershell', ['-NoProfile', '-NonInteractive', '-Command', WINDOWS_CREATION], {
+          timeout: 10_000, windowsHide: true, env: { ...process.env, TIMON_MISSION_PID: String(pid) },
+        })
       : await host.execAsync('ps', ['-o', 'lstart=', '-p', String(pid)], { timeout: 5_000 });
     const said = r.code === 0 ? r.stdout.replace(/^﻿/, '').trim() : '';
     return said && said.length <= MAX_IDENTITY ? said : null;

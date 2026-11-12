@@ -32,6 +32,7 @@
 import { randomUUID } from 'node:crypto';
 import webpush from 'web-push';
 import { dbApi, type NotificationRow, type PushSubscriptionRow } from '../../db.js';
+import { redactSecretsDeep } from '../../secrets/egress-guard.js';
 import { settingStr } from '../../settings.js';
 import type { PushFanoutResult } from '../../notifications.js';
 import { relayedMachineId } from '../../machines/relayed.js';
@@ -183,7 +184,7 @@ const EMPTY_FANOUT: PushFanoutResult = {
 
 async function sendRaw(row: PushSubscriptionRow, payload: unknown): Promise<SendResult> {
   try {
-    await webpush.sendNotification(toWebPushSubscription(row), JSON.stringify(payload), { TTL: 900 });
+    await webpush.sendNotification(toWebPushSubscription(row), JSON.stringify(redactSecretsDeep(payload)), { TTL: 900 });
     dbApi.setPushSubscriptionError(row.id, null);
     return { status: 'sent', error: null };
   } catch (err) {

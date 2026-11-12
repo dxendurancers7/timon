@@ -130,7 +130,7 @@ const SubscribeSchema = z.strictObject({
 
 const HmacSchemeSchema = z.strictObject({
   kind: z.literal('hmac'),
-  algorithm: z.enum(['sha256', 'sha1']),
+  algorithm: z.enum(['sha256', 'sha512']),
   encoding: z.enum(['hex', 'base64']),
   /** `whsec`: Standard Webhooks key, `whsec_<base64>` decoded; `utf8`: the secret's bytes as is. */
   key: z.enum(['utf8', 'whsec']).default('utf8'),

@@ -112,6 +112,7 @@ import {
   systemEnv, secretsEnvFor, inheritEnvEnabled,
   injectedSecretsFor, journalInjectedSecrets,
 } from './secrets/env.js';
+import { scrubSecretEnv } from './secrets.js';
 import { requestedSecretsFor, withRequestedSecrets } from './secrets/requests.js';
 export { ROLE_REGISTRY, type AgentRoleId } from './agent-roles.js';
 
@@ -187,9 +188,19 @@ export function missionEnv(opts: {
   if (opts.untrusted) return untrustedMissionEnv(opts, project);
   // Ternary, not a discarded result: in inherit mode `secretsEnvFor` must not
   // even be called (no vault read, no master key on the launch path).
-  const base = inheritEnvEnabled()
-    ? { ...process.env }
-    : { ...systemEnv(), ...(opts.secretsEnv ?? secretsEnvFor({ agent: opts.agentName, project: project || null })) };
+  let base: NodeJS.ProcessEnv;
+  if (inheritEnvEnabled()) {
+    // Legacy escape hatch: inherit the ordinary environment, never the vault.
+    // `{ ...process.env }` used to hand every mission the daemon's credentials
+    // (TIMON_REMOTE_MASTER, the Telegram token, the VAPID private key).
+    const scrubbed = scrubSecretEnv(process.env);
+    if (scrubbed.withheld.length) {
+      console.warn(`[secrets] inheritEnv withheld ${scrubbed.withheld.length} secret variable(s) from mission ${opts.missionId}: ${scrubbed.withheld.join(', ')}`);
+    }
+    base = scrubbed.env;
+  } else {
+    base = { ...systemEnv(), ...(opts.secretsEnv ?? secretsEnvFor({ agent: opts.agentName, project: project || null })) };
+  }
   const token = opts.token ?? missionApiToken(opts.missionId);
   const inherited = { ...base, ...(opts.specEnv ?? {}) };
   return {

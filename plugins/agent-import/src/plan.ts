@@ -115,16 +115,57 @@ const withSuffix = (base: string, n: number, max: number): string => {
   return base.slice(0, max - tail.length) + tail;
 };
 
+/** A private/loopback/link-local IPv4, judged by its first two octets. */
+function localV4(a: number, b: number): boolean {
+  return a === 0 || a === 10 || a === 127 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31)
+    || (a === 192 && b === 168) || (a === 100 && b >= 64 && b <= 127);
+}
+
+/** The eight 16-bit groups of an IPv6 literal, or null when it is not one. */
+function ipv6Groups(host: string): number[] | null {
+  const raw = host.split('%')[0]!;
+  if (!raw.includes(':')) return null;
+  const halves = raw.split('::');
+  if (halves.length > 2) return null;
+  const head = halves[0] ? halves[0].split(':') : [];
+  const tail = halves.length === 2 && halves[1] ? halves[1].split(':') : [];
+  const missing = 8 - head.length - tail.length;
+  if (halves.length === 1 ? missing !== 0 : missing < 1) return null;
+  const groups = [...head, ...Array<string>(halves.length === 2 ? missing : 0).fill('0'), ...tail];
+  const nums = groups.map((g) => (/^[0-9a-f]{1,4}$/.test(g) ? parseInt(g, 16) : Number.NaN));
+  return nums.some(Number.isNaN) ? null : nums;
+}
+
+/** The IPv4 address an IPv6 wrapper embeds, if any (mapped, NAT64, 6to4, compatible). */
+function embeddedV4(groups: number[]): [number, number] | null {
+  const pair = (hi: number, lo: number): [number, number] => [hi >> 8, hi & 0xff];
+  // ::ffff:a.b.c.d
+  if (groups.slice(0, 5).every((g) => g === 0) && groups[5] === 0xffff) return pair(groups[6]!, groups[7]!);
+  // 64:ff9b::a.b.c.d (NAT64)
+  if (groups[0] === 0x64 && groups[1] === 0xff9b && groups.slice(2, 6).every((g) => g === 0)) return pair(groups[6]!, groups[7]!);
+  // 2002:a.b.c.d:: (6to4)
+  if (groups[0] === 0x2002) return pair(groups[1]!, groups[2]!);
+  // Deprecated IPv4-compatible ::a.b.c.d, excluding :: and ::1.
+  if (groups.slice(0, 6).every((g) => g === 0) && !(groups[6] === 0 && groups[7]! <= 1)) return pair(groups[6]!, groups[7]!);
+  return null;
+}
+
 /** An address the daemon would refuse anyway (loopback, LAN, link-local): said in the preview. */
 export function isLocalUrl(url: URL): boolean {
   const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, '');
   if (host === 'localhost' || /\.(localhost|local|internal|lan|home)$/.test(host)) return true;
   const v4 = /^(\d{1,3})\.(\d{1,3})\.\d{1,3}\.\d{1,3}$/.exec(host);
-  if (v4) {
-    const a = Number(v4[1]);
-    const b = Number(v4[2]);
-    return a === 0 || a === 10 || a === 127 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31)
-      || (a === 192 && b === 168) || (a === 100 && b >= 64 && b <= 127);
+  if (v4) return localV4(Number(v4[1]), Number(v4[2]));
+  if (host.includes(':')) {
+    // IPv4 forms embedded in an IPv6 literal reach the same host: judge that host.
+    const dotted = /(\d{1,3}(?:\.\d{1,3}){3})$/.exec(host);
+    if (dotted) {
+      const p = dotted[1]!.split('.').map(Number);
+      return localV4(p[0]!, p[1]!);
+    }
+    const groups = ipv6Groups(host);
+    const mapped = groups ? embeddedV4(groups) : null;
+    if (mapped) return localV4(mapped[0], mapped[1]);
   }
   return host === '::1' || host === '::' || /^f[cd]/.test(host) || /^fe[89ab]/.test(host);
 }

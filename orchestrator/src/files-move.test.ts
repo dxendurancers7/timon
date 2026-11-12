@@ -69,13 +69,18 @@ test('renames in place and never overwrites', () => {
 });
 
 test('a change of case only renames; another entry with that spelling is never overwritten (TIM-0132)', () => {
-  writeFileSync(join(work, 'docs', 'case.txt'), 'mine');
-  // A case-sensitive volume (this one) holds both spellings: they are two files.
-  writeFileSync(join(work, 'docs', 'CASE.txt'), 'other');
-  assert.throws(() => renameAgentPath('a', 'docs/case.txt', 'CASE.txt'), /already exists/);
-  assert.equal(readFileSync(join(work, 'docs', 'CASE.txt'), 'utf8'), 'other', 'the other file is intact');
+  const docs = join(work, 'docs');
+  writeFileSync(join(docs, 'case.txt'), 'mine');
+  // A case-SENSITIVE volume holds both spellings as two files; a case-insensitive
+  // one (macOS default, this test's tmpdir) cannot even represent the scenario.
+  writeFileSync(join(docs, 'CASE.txt'), 'other');
+  const caseSensitive = readdirSync(docs).filter((name) => name.toLowerCase() === 'case.txt').length === 2;
+  if (caseSensitive) {
+    assert.throws(() => renameAgentPath('a', 'docs/case.txt', 'CASE.txt'), /already exists/);
+    assert.equal(readFileSync(join(docs, 'CASE.txt'), 'utf8'), 'other', 'the other file is intact');
+  }
   // A hard link is the same inode under another name: still a different name, refused.
-  linkSync(join(work, 'docs', 'case.txt'), join(work, 'docs', 'Linked.txt'));
+  linkSync(join(docs, 'case.txt'), join(docs, 'Linked.txt'));
   assert.throws(() => renameAgentPath('a', 'docs/case.txt', 'Linked.txt'), /already exists/);
   // Alone in its folder, the new spelling is free and the rename happens.
   mkdirSync(join(work, 'solo'));

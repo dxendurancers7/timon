@@ -22,6 +22,7 @@ import { randomUUID } from 'node:crypto';
 import { isIP } from 'node:net';
 import { db } from '../db.js';
 import { classifyAddress, DestinationRefusedError, guardedFetch, type AddressLookup, type DestinationPolicy } from '../plugins/net-guard.js';
+import { redactSecrets, redactSecretsDeep } from '../secrets/egress-guard.js';
 import type { TriggerInput } from './payload.js';
 import { signStandard } from './signature.js';
 import { getTrigger, recordDelivery, type Trigger } from './store.js';
@@ -69,9 +70,16 @@ export function webhookEnvelope(trigger: Trigger, input: TriggerInput, now: numb
   return JSON.stringify({ type, timestamp: new Date(now).toISOString(), data: input.body ?? null });
 }
 
+/** Redact credential values, parsing JSON so an escaped secret is still found. */
+function redactJsonBody(body: string): string {
+  try { return JSON.stringify(redactSecretsDeep(JSON.parse(body))); } catch { return redactSecrets(body); }
+}
+
 /** Queues one call and returns its `webhook-id`. Throws when it cannot be sent at all. */
 export function enqueueWebhook(trigger: Trigger, url: string, body: string, now: number = Date.now()): string {
   if (!trigger.outboundSecret) throw new Error('no outbound secret: rotate it on the trigger');
+  // No known credential leaves the daemon, even if a caller put one in the payload.
+  body = redactJsonBody(body);
   if (Buffer.byteLength(body) > OUTBOX_BODY_LIMIT) throw new Error('payload too large for a webhook');
   // A row saved before the guard existed fails here, visibly, not ten times in the outbox.
   const refused = webhookUrlRefusal(url);

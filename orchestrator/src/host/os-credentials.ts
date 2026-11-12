@@ -40,6 +40,13 @@ export function readOsCredential(
   const key = keyOf(entry);
   const lastMiss = misses.get(key);
   if (lastMiss && now - lastMiss < MISS_TTL_MS) return null;
+  // `security` reads `-s <service>` and `-a <account>` positionally: a value that
+  // starts with `-` would be taken for the next flag and shift the rest of the
+  // argv. The entry comes from a provider manifest, so keep it to a plain name.
+  if (unsafeCredentialArg(entry.service) || (entry.account !== undefined && unsafeCredentialArg(entry.account))) {
+    misses.set(key, now);
+    return null;
+  }
   try {
     const args = ['find-generic-password', '-s', entry.service, ...(entry.account ? ['-a', entry.account] : []), '-w'];
     const result = host.exec('security', args, { timeout: SECURITY_TIMEOUT_MS });
@@ -53,4 +60,13 @@ export function readOsCredential(
   }
   misses.set(key, now);
   return null;
+}
+
+/** A keychain service/account that cannot be mistaken for a flag. */
+function unsafeCredentialArg(value: unknown): boolean {
+  return typeof value !== 'string'
+    || value.length === 0
+    || value.length > 512
+    || /[\x00-\x1f\x7f]/.test(value)
+    || value.startsWith('-');
 }

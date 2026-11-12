@@ -4,8 +4,8 @@ import {
   spawnSync,
   type ChildProcess,
 } from 'node:child_process';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { isAbsolute, dirname, join } from 'node:path';
 import type { TimonConfig } from '../config/schema.js';
 import { TIMON_HOME } from '../paths.js';
 import type { Capability, ExecOpts, ExecResult, Host, SpawnOpts } from './types.js';
@@ -19,11 +19,55 @@ import { windowsDirectLaunch, windowsShimLaunch } from './windows-shell.js';
 /** Where the adapter reads `host.binaries` at each resolution. */
 export type BinaryPins = () => Record<string, string | null>;
 
+/** A file group/other can modify is refused: a pin must not be swappable. */
+function fileWritableByOthers(mode: number): boolean {
+  return (mode & 0o022) !== 0;
+}
+/** A directory is refused only when WORLD-writable, so a group-writable
+ *  package-manager bin (Homebrew's 0775) stays usable. */
+function dirWorldWritable(mode: number): boolean {
+  return (mode & 0o002) !== 0;
+}
+
+/**
+ * A Settings pin names the program to run. Refuse one that resolves to a
+ * non-file, or to a file group/other can modify, or to a world-writable
+ * directory: a dropped `/tmp/evil` pinned as `git` would otherwise run as the
+ * daemon. A private `mkdtemp` fixture (0700) and Homebrew's 0775 bin pass. On
+ * POSIX the owner must be this user or root.
+ */
+function assertTrustedBinary(resolved: string): string {
+  if (!isAbsolute(resolved)) throw new Error(`binary pin must be absolute: ${resolved}`);
+  let st: ReturnType<typeof statSync> | undefined;
+  try {
+    st = statSync(resolved);
+  } catch {
+    // A Windows app-execution alias (`WindowsApps\winget.exe`) can answer EACCES
+    // to stat; `resolvePinnedBinary` already vouched for it, so only POSIX
+    // refuses here.
+    if (process.platform === 'win32') return resolved;
+    throw new Error(`binary pin not found: ${resolved}`);
+  }
+  if (!st.isFile()) throw new Error(`binary pin is not a file: ${resolved}`);
+  if (process.platform !== 'win32') {
+    if (fileWritableByOthers(st.mode)) throw new Error(`binary pin is writable by group/other: ${resolved}`);
+    const dir = dirname(resolved);
+    let dirStat: ReturnType<typeof statSync> | undefined;
+    try { dirStat = statSync(dir); } catch { dirStat = undefined; }
+    if (dirStat && dirWorldWritable(dirStat.mode)) throw new Error(`binary pin sits in a world-writable directory: ${dir}`);
+    if (typeof process.getuid === 'function') {
+      const uid = process.getuid();
+      if (st.uid !== uid && st.uid !== 0) throw new Error(`binary pin is not owned by this user or root: ${resolved}`);
+    }
+  }
+  return resolved;
+}
+
 function resolveBin(pins: BinaryPins, name: string, options: BinarySearchOptions): string {
   const configured = pins()[name];
   if (configured) {
     const pinned = resolvePinnedBinary(name, configured, options);
-    if (pinned) return pinned;
+    if (pinned) return assertTrustedBinary(pinned);
     throw new Error(`binary "${name}" not found or not executable: ${configured}`);
   }
   const resolved = findExecutableBinary(name, options);

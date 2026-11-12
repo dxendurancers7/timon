@@ -1825,7 +1825,7 @@ export function registerRoutes(app: express.IRouter): void {
       // A client registered under another redirect URI (the old default, a
       // changed port or public URL) would be refused at the publisher: register again.
       const saved = s.transport.oauth?.redirect_uri === redirectUri ? s.transport.oauth?.client : undefined;
-      const client = saved ?? await dynamicRegister(metadata, redirectUri);
+      const client = saved ?? await dynamicRegister(metadata, redirectUri, 'TIMON', s.transport.url);
       const { verifier, challenge } = pkcePair();
       const state = randomState();
       // Capture where the user came from so the post-callback bounce lands on
@@ -1839,6 +1839,7 @@ export function registerRoutes(app: express.IRouter): void {
       putPending(state, {
         mcp_id: id, code_verifier: verifier, redirect_uri: redirectUri,
         metadata, client, created_at: Date.now(), return_to: returnTo,
+        seed_url: s.transport.url,
         ...(returnPath ? { return_path: returnPath } : {}),
       });
       // Persist metadata + client early so a later "Save" in the UI doesn't
@@ -1867,7 +1868,7 @@ export function registerRoutes(app: express.IRouter): void {
     }
     try {
       const tokens = await exchangeCode(
-        pending.metadata, pending.client, pending.redirect_uri, code, pending.code_verifier,
+        pending.metadata, pending.client, pending.redirect_uri, code, pending.code_verifier, pending.seed_url,
       );
       setMcpOAuth(pending.mcp_id, {
         metadata: pending.metadata,

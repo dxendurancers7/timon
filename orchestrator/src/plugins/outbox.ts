@@ -27,6 +27,7 @@
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { db } from '../db.js';
+import { redactSecretsDeep } from '../secrets/egress-guard.js';
 import { signStandard } from '../triggers/signature.js';
 
 import type {
@@ -170,7 +171,10 @@ export function createPluginOutbox(deps: PluginOutboxDeps): PluginOutboxHost & {
 
     let serialized: string | null = null;
     if (body !== undefined) {
-      try { serialized = JSON.stringify(body); } catch {
+      // Redact the PARSED value, not the serialized string: a credential in a
+      // string field is found (even one containing quotes/newlines) and a number
+      // that happens to equal a secret is never rewritten into invalid JSON.
+      try { serialized = JSON.stringify(redactSecretsDeep(body)); } catch {
         throw new PluginOutboxError('body is not JSON-serialisable', 'invalid');
       }
       if (serialized === undefined) throw new PluginOutboxError('body is not JSON-serialisable', 'invalid');
